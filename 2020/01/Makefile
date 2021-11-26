@@ -15,6 +15,10 @@ help:
 scheme: ## Run the MIT scheme solution
 scheme:
 	scheme --quiet < main.scm
+main.json: ## Evaluate the Jsonnet solution
+main.json: main.jsonnet input.txt
+	jsonnet $< > $@
+
 
 .PHONY: repl
 repl: ## Load the MIT scheme solution in a REPL
