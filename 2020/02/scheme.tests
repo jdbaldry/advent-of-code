@@ -1,0 +1,6 @@
+;Loading "lib.scm"... done
+split-string: #t #t 
+string->entry: #t 
+part-one-password-valid?: #t #t 
+part-two-password-valid?: #t #t #t 
+matching-char?: #t #t #t #t 

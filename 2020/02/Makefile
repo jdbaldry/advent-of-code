@@ -11,17 +11,16 @@ help: ## Display this help
 help:
 	@awk 'BEGIN {FS = ": ##"; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z0-9_\.\-\/%]+: ##/ { printf "  %-45s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-.PHONY: test
-test: ## Run tests
-test:
-	scheme --quiet < lib_test.scm
 
-.PHONY: scheme
-scheme: ## Run the MIT scheme solution
-scheme:
-	scheme --quiet < main.scm
+scheme.tests: ## Run MIT scheme tests
+scheme.tests: lib_test.scm lib.scm
+	scheme --quiet < $< > $@
+
+scheme.out: ## Evaluate the MIT scheme solution
+scheme.out: main.scm lib.scm input.txt
+	scheme --quiet < $< > $@
 
 .PHONY: repl
-repl: ## Load the MIT scheme solution in a REPL
+repl: ## Load the MIT scheme library in a REPL
 repl:
 	rlwrap scheme --load lib.scm
