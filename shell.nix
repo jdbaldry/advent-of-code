@@ -2,7 +2,7 @@
 
 with pkgs;
 mkShell {
-  buildInputs = [ gnumake go-jsonnet mitscheme rlwrap ];
+  buildInputs = [ gnumake go_1_17 gopls go-jsonnet mitscheme rlwrap ];
   shellHook = ''
     # ...
   '';
