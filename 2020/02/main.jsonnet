@@ -22,24 +22,24 @@ local parseLine(line) =
   local min = digits.value;
   local index = digits.index;
 
-  local any = parse(pc.any)(line, pc.init { index: index });
+  local any = parse(pc.any)(line, [pc.init[0] { index: index }]);
   local index = any.index;
 
-  local digits = parse(pc.star(pc.digit), std.parseInt)(line, pc.init { index: index });
+  local digits = parse(pc.star(pc.digit), std.parseInt)(line, [pc.init[0] { index: index }]);
   local max = digits.value;
   local index = digits.index;
 
-  local any = parse(pc.any)(line, pc.init { index: index });
+  local any = parse(pc.any)(line, [pc.init[0] { index: index }]);
   local index = any.index;
 
-  local lower = parse(pc.lower)(line, pc.init { index: index });
+  local lower = parse(pc.lower)(line, [pc.init[0] { index: index }]);
   local char = lower.value;
   local index = lower.index;
 
-  local any2 = parse(pc.n(pc.any, 2))(line, pc.init { index: index });
+  local any2 = parse(pc.n(pc.any, 2))(line, [pc.init[0] { index: index }]);
   local index = any2.index;
 
-  local lowers = parse(pc.star(pc.lower))(line, pc.init { index: index });
+  local lowers = parse(pc.star(pc.lower))(line, [pc.init[0] { index: index }]);
   local string = lowers.value;
 
   {

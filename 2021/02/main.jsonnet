@@ -15,20 +15,20 @@ local parse(parser=function(str, state) state, converter=function(str) str) = fu
   }
 ;
 
-local state = pc.init { line: 1 };
+local state = [pc.init[0] { line: 1 }];
 local parseCommand(command, line) =
   local alternates = parse(pc.alternates([
     pc.string('down'),
     pc.string('forward'),
     pc.string('up'),
-  ]))(command, state { line: line });
+  ]))(command, [state[0] { line: line }]);
   local direction = alternates.value;
   local index = alternates.index;
 
-  local space = parse(pc.char(' '))(command, state { index: index, line: line });
+  local space = parse(pc.char(' '))(command, [state[0] { index: index, line: line }]);
   local index = space.index;
 
-  local digits = parse(pc.star(pc.digit), std.parseInt)(command, state { index: index, line: line });
+  local digits = parse(pc.star(pc.digit), std.parseInt)(command, [state[0] { index: index, line: line }]);
   local distance = digits.value;
   local index = digits.index;
   assert index == std.length(command) : 'unparsed command: "%s"' % [command[index:]];
