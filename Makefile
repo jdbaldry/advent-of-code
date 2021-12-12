@@ -11,7 +11,7 @@ help: ## Display this help
 help:
 	@awk 'BEGIN {FS = ": ##"; printf "Usage:\n  make <target>\n\nTargets:\n"} /^[a-zA-Z0-9_\.\-\/%]+: ##/ { printf "  %-15s %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-ALL = $(dir $(shell find . -name Makefile -mmin +2 | sort))
+ALL = $(dir $(shell find . -wholename './*/*/Makefile' | sort))
 
 .PHONY: all
 all: ## Run all solutions
