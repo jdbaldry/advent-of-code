@@ -136,16 +136,13 @@ local partTwo() =
   // incomplete line of chunks.
   local scores =
     std.sort(
-      std.map(
-        calculateScore,
-        std.prune(std.map(
-          function(line)
-            local lexed = lex(lexerState.new(line));
-            if lexed.err == 'incomplete chunk' then
-              lexed.chunks.stack,
-          lines(input)
-        )),
-      )
+      std.prune(std.map(
+        function(line)
+          local lexed = lex(lexerState.new(line));
+          if lexed.err == 'incomplete chunk' then
+            calculateScore(lexed.chunks.stack),
+        lines(input)
+      )),
     )
   ;
   middle(scores)
