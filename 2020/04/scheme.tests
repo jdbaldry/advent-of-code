@@ -1,0 +1,5 @@
+;Loading "lib.scm"... done
+split-string: #t #t 
+read-passports: #t 
+has-all-required-fields?: #t 
+valid-hgt?: #t #t #t 

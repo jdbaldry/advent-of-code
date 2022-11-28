@@ -1,4 +1,4 @@
-local pc = import '../02/parser-combinators.libsonnet';
+local pc = import '../lib/parser-combinators.libsonnet';
 
 local input = importstr 'input.txt';
 // local input = importstr 'test.txt';

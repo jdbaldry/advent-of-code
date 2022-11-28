@@ -103,6 +103,9 @@ local digit = satisfies(function(c) '0' <= c && c <= '9');
 // lower parses lowercase alphabetic characters a-z.
 local lower = satisfies(function(c) 'a' <= c && c <= 'z');
 
+// upper parses upper alphabetic characters a-z.
+local upper = satisfies(function(c) 'A' <= c && c <= 'Z');
+
 // ws matches any whitespace character.
 local ws = satisfies(function(c) c == ' ' || c == '\n' || c == '\t' || c == '\r');
 
@@ -143,5 +146,6 @@ local ws = satisfies(function(c) c == ' ' || c == '\n' || c == '\t' || c == '\r'
   lower:: lower,
   set(s):: set(s),
   string(str):: string(str),
+  upper:: upper,
   ws:: ws,
 }
