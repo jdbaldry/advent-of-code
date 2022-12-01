@@ -73,6 +73,7 @@ func twoNoParse(r io.Reader) int {
 			if next > highest[2] {
 				next, highest[2] = 0, next
 			}
+			next = 0
 		default:
 			int, err := strconv.Atoi(scanner.Text())
 			if err != nil {
@@ -85,6 +86,7 @@ func twoNoParse(r io.Reader) int {
 		panic(fmt.Sprintf("Unexpected error: %v\nThis should have been an error not a panic!", err))
 	}
 
+	// Handle absent trailing newline.
 	if next > highest[0] {
 		next, highest[0], highest[1], highest[2] = 0, next, highest[0], highest[1]
 	}
@@ -99,45 +101,5 @@ func twoNoParse(r io.Reader) int {
 	for _, addend := range highest {
 		sum += addend
 	}
-	return sum
-}
-
-// twoMinimalState solves the problem with the least memory ignoring
-// the scanner state.
-// To alter this to work with n highest totals, you would instead
-// need:
-//
-//	 func twoMinimalState(r io.Reader, n int) int {
-//		var sum, nthHighest, next, i int
-//		...
-//		if i < n {
-func twoMinimalState(r io.Reader) int {
-	var sum, thirdHighest, next, i int
-
-	scanner := bufio.NewScanner(r)
-	for scanner.Scan() {
-		switch scanner.Text() {
-		case "":
-			if i < 3 {
-				sum, next = sum+next, 0
-				continue
-			}
-			if next > thirdHighest {
-				sum, thirdHighest = sum+next-thirdHighest, next
-			}
-			next = 0
-
-		default:
-			int, err := strconv.Atoi(scanner.Text())
-			if err != nil {
-				panic(fmt.Sprintf("Unable to convert %q to integer\nThis should have been an error not a panic!", scanner.Text()))
-			}
-			next += int
-		}
-	}
-	if err := scanner.Err(); err != nil {
-		panic(fmt.Sprintf("Unexpected error: %v\nThis should have been an error not a panic!", err))
-	}
-
 	return sum
 }

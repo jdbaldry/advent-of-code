@@ -3,13 +3,29 @@
 === RUN   TestOne
 --- PASS: TestOne (0.00s)
 === RUN   TestTwo
+=== RUN   TestTwo/example
+=== RUN   TestTwo/unordered
+=== RUN   TestTwo/input
 --- PASS: TestTwo (0.00s)
+    --- PASS: TestTwo/example (0.00s)
+    --- PASS: TestTwo/unordered (0.00s)
+    --- PASS: TestTwo/input (0.00s)
 === RUN   TestTwoNoSort
+=== RUN   TestTwoNoSort/example
+=== RUN   TestTwoNoSort/unordered
+=== RUN   TestTwoNoSort/input
 --- PASS: TestTwoNoSort (0.00s)
+    --- PASS: TestTwoNoSort/example (0.00s)
+    --- PASS: TestTwoNoSort/unordered (0.00s)
+    --- PASS: TestTwoNoSort/input (0.00s)
 === RUN   TestTwoNoParse
+=== RUN   TestTwoNoParse/example
+=== RUN   TestTwoNoParse/unordered
+=== RUN   TestTwoNoParse/input
 --- PASS: TestTwoNoParse (0.00s)
-=== RUN   TestTwoMinimalState
---- PASS: TestTwoMinimalState (0.00s)
+    --- PASS: TestTwoNoParse/example (0.00s)
+    --- PASS: TestTwoNoParse/unordered (0.00s)
+    --- PASS: TestTwoNoParse/input (0.00s)
 === RUN   FuzzParse
 === RUN   FuzzParse/seed#0
 --- PASS: FuzzParse (0.00s)

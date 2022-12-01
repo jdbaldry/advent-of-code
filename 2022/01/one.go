@@ -27,6 +27,7 @@ func parse(r io.Reader) ([][]int, error) {
 		return nil, err
 	}
 
+	// Handle absent trailing newline.
 	parsed = append(parsed, next)
 
 	return parsed, nil
