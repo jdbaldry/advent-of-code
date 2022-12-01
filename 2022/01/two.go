@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"sort"
 	"strconv"
@@ -53,53 +52,48 @@ func twoNoSort(input [][]int) int {
 	return sum
 }
 
-func twoNoParse(r io.Reader) int {
+func twoNoParse(r io.Reader) (int, error) {
 	var highest [3]int
 
 	scanner := bufio.NewScanner(r)
 
 	var next int
+	insertSum := func(highest *[3]int, next *int) {
+		if *next > (*highest)[0] {
+			*next, (*highest)[0], (*highest)[1], (*highest)[2] = 0, *next, (*highest)[0], (*highest)[1]
+			return
+		}
+		if *next > (*highest)[1] {
+			*next, (*highest)[1], (*highest)[2] = 0, *next, (*highest)[1]
+			return
+		}
+		if *next > (*highest)[2] {
+			*next, (*highest)[2] = 0, *next
+		}
+		*next = 0
+		return
+	}
 	for scanner.Scan() {
 		switch scanner.Text() {
 		case "":
-			if next > highest[0] {
-				next, highest[0], highest[1], highest[2] = 0, next, highest[0], highest[1]
-				continue
-			}
-			if next > highest[1] {
-				next, highest[1], highest[2] = 0, next, highest[1]
-				continue
-			}
-			if next > highest[2] {
-				next, highest[2] = 0, next
-			}
-			next = 0
+			insertSum(&highest, &next)
 		default:
 			int, err := strconv.Atoi(scanner.Text())
 			if err != nil {
-				panic(fmt.Sprintf("Unable to convert %q to integer\nThis should have been an error not a panic!", scanner.Text()))
+				return 0, err
 			}
 			next += int
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		panic(fmt.Sprintf("Unexpected error: %v\nThis should have been an error not a panic!", err))
+		return 0, err
 	}
 
-	// Handle absent trailing newline.
-	if next > highest[0] {
-		next, highest[0], highest[1], highest[2] = 0, next, highest[0], highest[1]
-	}
-	if next > highest[1] {
-		next, highest[1], highest[2] = 0, next, highest[1]
-	}
-	if next > highest[2] {
-		next, highest[2] = 0, next
-	}
-
+	// Handle absent empty line.
+	insertSum(&highest, &next)
 	var sum int
 	for _, addend := range highest {
 		sum += addend
 	}
-	return sum
+	return sum, nil
 }

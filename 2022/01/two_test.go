@@ -90,7 +90,10 @@ func BenchmarkTwoNoSort(b *testing.B) {
 func TestTwoNoParse(t *testing.T) {
 	for _, tc := range tcs {
 		t.Run(tc.name, func(t *testing.T) {
-			got := twoNoParse(tc.input())
+			got, err := twoNoParse(tc.input())
+			if err != nil {
+				t.Fatalf("twoNoParse() unexpected error: %v", err)
+			}
 			if diff := cmp.Diff(tc.want, got); diff != "" {
 				t.Errorf("twoNoParse() mismatch (-want +got):\n%s", diff)
 			}
@@ -101,7 +104,10 @@ func TestTwoNoParse(t *testing.T) {
 func BenchmarkTwoNoParse(b *testing.B) {
 	want := 45000
 	for i := 0; i < b.N; i++ {
-		got := twoNoParse(strings.NewReader(example))
+		got, err := twoNoParse(strings.NewReader(example))
+		if err != nil {
+			b.Fatalf("twoNoParse() unexpected error: %v", err)
+		}
 		if got != want {
 			b.Fatalf("twoNoParse() mismatch: want %d, got %d", want, got)
 		}
