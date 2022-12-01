@@ -60,15 +60,15 @@ func twoNoParse(r io.Reader) (int, error) {
 	var next int
 	insertSum := func(highest *[3]int, next *int) {
 		if *next > (*highest)[0] {
-			*next, (*highest)[0], (*highest)[1], (*highest)[2] = 0, *next, (*highest)[0], (*highest)[1]
-			return
-		}
-		if *next > (*highest)[1] {
-			*next, (*highest)[1], (*highest)[2] = 0, *next, (*highest)[1]
-			return
-		}
-		if *next > (*highest)[2] {
-			*next, (*highest)[2] = 0, *next
+			(*highest)[0], (*highest)[1], (*highest)[2] = *next, (*highest)[0], (*highest)[1]
+		} else {
+			if *next > (*highest)[1] {
+				*next, (*highest)[1], (*highest)[2] = 0, *next, (*highest)[1]
+			} else {
+				if *next > (*highest)[2] {
+					(*highest)[2] = *next
+				}
+			}
 		}
 		*next = 0
 		return
