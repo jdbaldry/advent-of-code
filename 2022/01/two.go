@@ -105,7 +105,7 @@ func twoNoParse(r io.Reader) int {
 // twoMinimalState solves the problem with the least memory ignoring
 // the scanner state.
 // To alter this to work with n highest totals, you would instead
-// nead:
+// need:
 //
 //	 func twoMinimalState(r io.Reader, n int) int {
 //		var sum, nthHighest, next, i int
