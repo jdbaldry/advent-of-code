@@ -13,6 +13,8 @@ help:
 
 GO_FILES = one.go one_test.go two.go two_test.go
 
+all: go.test.out go.bench.out go.out
+
 go.bench.out go.bench.mem.prof: ## Run benchmarks.
 go.bench.out go.bench.mem.prof: go.test
 	./$< -test.bench 'Benchmark.*' -test.benchmem -test.memprofile go.bench.mem.prof ./ | tee go.bench.out
