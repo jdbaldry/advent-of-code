@@ -1,2 +1,5 @@
 main
 /flake-profile*
+go.test
+go.build
+go.bench.mem.prof

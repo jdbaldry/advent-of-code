@@ -3,10 +3,12 @@
 with pkgs;
 mkShell {
   buildInputs = [
+    graphviz
     gnumake
     go-jsonnet
-    go_1_17
+    go_1_19
     gopls
+    gotools
     jsonnet-tool
     jq
     mitscheme
