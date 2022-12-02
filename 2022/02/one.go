@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"unicode/utf8"
 )
 
 const (
@@ -38,6 +39,14 @@ var (
 		"X": rock,
 		"Y": paper,
 		"Z": scissors,
+	}
+	shapesByRune = map[rune]int{
+		'A': rock,
+		'B': paper,
+		'C': scissors,
+		'X': rock,
+		'Y': paper,
+		'Z': scissors,
 	}
 )
 
@@ -78,6 +87,64 @@ func oneMod3(r io.Reader) (int, error) {
 		opp, own := shapes[matches[1]], shapes[matches[2]]
 		distance := ((own + 3) - opp) % 3
 		sum += ((distance+1)%3)*3 + own
+	}
+	if err := scanner.Err(); err != nil {
+		return sum, err
+	}
+
+	return sum, nil
+}
+
+func oneMod3ByRunes(r io.Reader) (int, error) {
+	var sum int
+
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanRunes)
+
+	const (
+		stateOpp = iota
+		stateSpace
+		stateOwn
+		stateLine
+	)
+	var state = stateOpp
+	var opp, own int
+	for line, col := 0, 0; scanner.Scan(); line, col = line+1, col+1 {
+		rune, _ := utf8.DecodeRune(scanner.Bytes())
+
+		switch state {
+		case stateOpp:
+			switch rune {
+			case 'A', 'B', 'C':
+				opp = shapesByRune[rune]
+				state = stateSpace
+			default:
+				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted /[ABC]/", line, col, rune)
+			}
+		case stateSpace:
+			if rune != ' ' {
+				return sum, fmt.Errorf(`%d:%d: unexpected rune %q, wanted " "`, line, col, rune)
+			}
+			state = stateOwn
+		case stateOwn:
+			switch rune {
+			case 'X', 'Y', 'Z':
+				own = shapesByRune[rune]
+				state = stateLine
+				distance := ((own + 3) - opp) % 3
+				sum += ((distance+1)%3)*3 + own
+			default:
+				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted /[XYZ]/", line, col, rune)
+			}
+		case stateLine:
+			switch rune {
+			case '\n':
+				state = stateOpp
+			default:
+				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted newline", line, col, rune)
+			}
+		}
+
 	}
 	if err := scanner.Err(); err != nil {
 		return sum, err

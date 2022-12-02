@@ -21,6 +21,7 @@ func TestOnes(t *testing.T) {
 	}{
 		{"one", one},
 		{"oneMod3", oneMod3},
+		{"oneMod3ByRunes", oneMod3ByRunes},
 	} {
 		for _, tc := range []struct {
 			name  string
@@ -75,10 +76,23 @@ func BenchmarkOneMod3(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		got, err := oneMod3(strings.NewReader(example))
 		if err != nil {
-			b.Fatalf("one() unexpected error: %v", err)
+			b.Fatalf("oneMod3() unexpected error: %v", err)
 		}
 		if got != want {
-			b.Fatalf("one() mismatch: want %v, got %v", want, got)
+			b.Fatalf("oneMod3() mismatch: want %v, got %v", want, got)
+		}
+	}
+}
+
+func BenchmarkOneMod3ByRunes(b *testing.B) {
+	want := 15
+	for i := 0; i < b.N; i++ {
+		got, err := oneMod3ByRunes(strings.NewReader(example))
+		if err != nil {
+			b.Fatalf("oneMod3ByRunes() unexpected error: %v", err)
+		}
+		if got != want {
+			b.Fatalf("oneMod3ByRunes() mismatch: want %v, got %v", want, got)
 		}
 	}
 }
