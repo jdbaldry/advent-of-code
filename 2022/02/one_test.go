@@ -14,38 +14,46 @@ B X
 C Z
 `
 
-func TestOne(t *testing.T) {
-	for _, tc := range []struct {
-		name  string
-		input func() io.Reader
-		want  int
+func TestOnes(t *testing.T) {
+	for _, solution := range []struct {
+		name string
+		fn   func(io.Reader) (int, error)
 	}{
-		{
-			"example",
-			func() io.Reader { return strings.NewReader(example) },
-			15,
-		},
-		{
-			"input",
-			func() io.Reader {
-				f, err := os.Open("input.txt")
-				if err != nil {
-					panic(err)
-				}
-				return f
-			},
-			12645,
-		},
+		{"one", one},
+		{"oneMod3", oneMod3},
 	} {
-		t.Run(tc.name, func(t *testing.T) {
-			got, err := one(tc.input())
-			if err != nil {
-				t.Fatalf("one() unexpected error: %v", err)
-			}
-			if diff := cmp.Diff(tc.want, got); diff != "" {
-				t.Errorf("one() mismatch (-want +got):\n%s", diff)
-			}
-		})
+		for _, tc := range []struct {
+			name  string
+			input func() io.Reader
+			want  int
+		}{
+			{
+				"example",
+				func() io.Reader { return strings.NewReader(example) },
+				15,
+			},
+			{
+				"input",
+				func() io.Reader {
+					f, err := os.Open("input.txt")
+					if err != nil {
+						panic(err)
+					}
+					return f
+				},
+				12645,
+			},
+		} {
+			t.Run(tc.name, func(t *testing.T) {
+				got, err := solution.fn(tc.input())
+				if err != nil {
+					t.Fatalf("%s() unexpected error: %v", solution.name, err)
+				}
+				if diff := cmp.Diff(tc.want, got); diff != "" {
+					t.Errorf("%s() mismatch (-want +got):\n%s", solution.name, diff)
+				}
+			})
+		}
 	}
 }
 

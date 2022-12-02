@@ -58,6 +58,14 @@ func one(r io.Reader) (int, error) {
 	return sum, nil
 }
 
+// oneMod3 solves the problem using the following knowledge:
+// rock < paper < scissors < rock ...
+// Distance is the number of steps taken up the order to reach the opponents shape.
+// When the opponent chooses a winning shape, the distance is 1.
+// When the opponent chooses a losing shape, the distance is 2.
+// When the opponent chooses the same shape, the distance is 0.
+// The distance is rotated by one using (distance + 1) mod 3 to get results that can be mapped
+// to scores using *3.
 func oneMod3(r io.Reader) (int, error) {
 	var sum int
 	strategyRegexp := regexp.MustCompile(`^([ABC]) ([XYZ])$`)
@@ -68,7 +76,8 @@ func oneMod3(r io.Reader) (int, error) {
 			return sum, fmt.Errorf("unable to parse input on line %d: %q it must match the regexp %q", i, scanner.Text(), strategyRegexp.String())
 		}
 		opp, own := shapes[matches[1]], shapes[matches[2]]
-		sum += ((own+2-opp)%3)*3 + own
+		distance := ((own + 3) - opp) % 3
+		sum += ((distance+1)%3)*3 + own
 	}
 	if err := scanner.Err(); err != nil {
 		return sum, err
