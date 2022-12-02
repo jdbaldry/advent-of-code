@@ -2,11 +2,13 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
+	"regexp"
 )
 
 const (
-	rock uint16 = iota + 1
+	rock = iota + 1
 	paper
 	scissors
 )
@@ -19,15 +21,23 @@ const (
 
 var (
 	oneResults = map[string]int{
-		"A X": int(draw + rock),
-		"A Y": int(win + paper),
-		"A Z": int(loss + scissors),
-		"B X": int(loss + rock),
-		"B Y": int(draw + paper),
-		"B Z": int(win + scissors),
-		"C X": int(win + rock),
-		"C Y": int(loss + paper),
-		"C Z": int(draw + scissors),
+		"A X": draw + rock,
+		"A Y": win + paper,
+		"A Z": loss + scissors,
+		"B X": loss + rock,
+		"B Y": draw + paper,
+		"B Z": win + scissors,
+		"C X": win + rock,
+		"C Y": loss + paper,
+		"C Z": draw + scissors,
+	}
+	shapes = map[string]int{
+		"A": rock,
+		"B": paper,
+		"C": scissors,
+		"X": rock,
+		"Y": paper,
+		"Z": scissors,
 	}
 )
 
@@ -35,7 +45,30 @@ func one(r io.Reader) (int, error) {
 	var sum int
 	scanner := bufio.NewScanner(r)
 	for i := 0; scanner.Scan(); i++ {
-		sum += oneResults[scanner.Text()]
+		result, ok := oneResults[scanner.Text()]
+		if !ok {
+			return sum, fmt.Errorf("unexpected input on line %d: %q", i, scanner.Text())
+		}
+		sum += result
+	}
+	if err := scanner.Err(); err != nil {
+		return sum, err
+	}
+
+	return sum, nil
+}
+
+func oneMod3(r io.Reader) (int, error) {
+	var sum int
+	strategyRegexp := regexp.MustCompile(`^([ABC]) ([XYZ])$`)
+	scanner := bufio.NewScanner(r)
+	for i := 0; scanner.Scan(); i++ {
+		matches := strategyRegexp.FindStringSubmatch(scanner.Text())
+		if len(matches) != 3 {
+			return sum, fmt.Errorf("unable to parse input on line %d: %q it must match the regexp %q", i, scanner.Text(), strategyRegexp.String())
+		}
+		opp, own := shapes[matches[1]], shapes[matches[2]]
+		sum += ((own+2-opp)%3)*3 + own
 	}
 	if err := scanner.Err(); err != nil {
 		return sum, err

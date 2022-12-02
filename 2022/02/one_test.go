@@ -61,3 +61,16 @@ func BenchmarkOne(b *testing.B) {
 		}
 	}
 }
+
+func BenchmarkOneMod3(b *testing.B) {
+	want := 15
+	for i := 0; i < b.N; i++ {
+		got, err := oneMod3(strings.NewReader(example))
+		if err != nil {
+			b.Fatalf("one() unexpected error: %v", err)
+		}
+		if got != want {
+			b.Fatalf("one() mismatch: want %v, got %v", want, got)
+		}
+	}
+}
