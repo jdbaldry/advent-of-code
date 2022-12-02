@@ -40,14 +40,6 @@ var (
 		"Y": paper,
 		"Z": scissors,
 	}
-	shapesByRune = map[rune]int{
-		'A': rock,
-		'B': paper,
-		'C': scissors,
-		'X': rock,
-		'Y': paper,
-		'Z': scissors,
-	}
 )
 
 func one(r io.Reader) (int, error) {
@@ -116,7 +108,7 @@ func oneMod3ByRunes(r io.Reader) (int, error) {
 		case stateOpp:
 			switch rune {
 			case 'A', 'B', 'C':
-				opp = shapesByRune[rune]
+				opp = int(rune) - int('A')
 				state = stateSpace
 			default:
 				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted /[ABC]/", line, col, rune)
@@ -129,10 +121,10 @@ func oneMod3ByRunes(r io.Reader) (int, error) {
 		case stateOwn:
 			switch rune {
 			case 'X', 'Y', 'Z':
-				own = shapesByRune[rune]
+				own = int(rune) - int('X')
 				state = stateLine
 				distance := ((own + 3) - opp) % 3
-				sum += ((distance+1)%3)*3 + own
+				sum += ((distance+1)%3)*3 + own + 1
 			default:
 				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted /[XYZ]/", line, col, rune)
 			}
