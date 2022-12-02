@@ -58,6 +58,8 @@ func twoNoParse(r io.Reader) (int, error) {
 	scanner := bufio.NewScanner(r)
 
 	var next int
+	// insertSum will insert next into sorted array highest
+	// maintaining sort order.
 	insertSum := func(highest *[3]int, next *int) {
 		if *next > (*highest)[0] {
 			(*highest)[0], (*highest)[1], (*highest)[2] = *next, (*highest)[0], (*highest)[1]
