@@ -8,4 +8,4 @@ main: ## Build the Go binary
 
 go.out: ## Run the Go solution
 go.out: $(GO_DEPS)
-	./main > $@
+	./main | tee $@

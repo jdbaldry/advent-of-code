@@ -6,6 +6,7 @@ mkShell {
     graphviz
     gnumake
     go-jsonnet
+    golangci-lint
     go_1_19
     gopls
     gotools

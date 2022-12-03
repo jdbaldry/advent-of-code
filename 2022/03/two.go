@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"unicode/utf8"
 )
@@ -19,18 +18,25 @@ func two(r io.Reader) (int, error) {
 		if r == '\n' {
 			line, col = line+1, -1
 			if line%3 == 0 {
-				sum += priorities[group[0]&group[1]&group[2]]
+				priority := group[0] & group[1] & group[2]
+				for i := 1; i <= 64; i++ {
+					if priority == 1 {
+						sum += i
+						break
+					}
+					priority >>= 1
+				}
+
 				group = [3]uint64{}
 			}
 			continue
 		}
 
-		field, ok := fields[byte(r)]
-		if !ok {
-			return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted newline", line, col, r)
+		shift := int(r) - int('a')
+		if shift < 0 {
+			shift += 58
 		}
-
-		group[line%3] |= field
+		group[line%3] |= uint64(1 << shift)
 	}
 
 	return sum, nil
