@@ -101,7 +101,7 @@ func oneMod3ByRunes(r io.Reader) (int, error) {
 	)
 	var state = stateOpp
 	var opp, own int
-	for line, col := 0, 0; scanner.Scan(); line, col = line+1, col+1 {
+	for line, col := 0, 0; scanner.Scan(); col++ {
 		rune, _ := utf8.DecodeRune(scanner.Bytes())
 
 		switch state {
@@ -132,6 +132,7 @@ func oneMod3ByRunes(r io.Reader) (int, error) {
 			switch rune {
 			case '\n':
 				state = stateOpp
+				line, col = line+1, -1
 			default:
 				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted newline", line, col, rune)
 			}
