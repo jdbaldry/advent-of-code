@@ -5,6 +5,9 @@ import (
 	"io"
 )
 
+// one returns the set intersection of the two parts of a line using a bit field.
+// 58 is the magic number needed to wrap the upper case ASCII alphabet around the lower case.
+// Priorities are a=1,b=2,...;z=26;A=27;B=28;Z=52.
 func one(r io.Reader) (int, error) {
 	var sum int
 
