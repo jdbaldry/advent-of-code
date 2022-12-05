@@ -1,0 +1,9 @@
+=== RUN   TestOnes
+=== RUN   TestOnes/example
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+=== RUN   TestTwos
+=== RUN   TestTwos/example
+--- PASS: TestTwos (0.00s)
+    --- PASS: TestTwos/example (0.00s)
+PASS
