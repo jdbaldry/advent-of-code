@@ -1,6 +1,7 @@
 package fetcher
 
 import (
+	"bytes"
 	"errors"
 	"io"
 	"net/http"
@@ -52,13 +53,14 @@ func (cf CachingFetcher) Fetch() (io.ReadSeeker, error) {
 		if err := os.WriteFile(cf.path, contents, os.ModePerm); err != nil {
 			return nil, err
 		}
+		f, err := os.Open(cf.path)
+		if err != nil {
+			return nil, err
+		}
+		return f, nil
 	}
 
-	f, err := os.Open(cf.path)
-	if err != nil {
-		return nil, err
-	}
-	return f, nil
+	return bytes.NewReader(contents), nil
 }
 
 // NewCachingFetcher returns a CachingFetcher that retrieves input from the URL
