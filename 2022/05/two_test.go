@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"os"
 	"strings"
 	"testing"
 
@@ -40,14 +41,22 @@ func TestTwos(t *testing.T) {
 }
 
 func BenchmarkTwo(b *testing.B) {
-	want := "MCD"
+	want := "LVMRWSSPZ"
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
 	for i := 0; i < b.N; i++ {
-		got, err := two(strings.NewReader(example))
+		got, err := two(f)
 		if err != nil {
 			b.Fatalf("two() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("two() mismatch: want %v, got %v", want, got)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }

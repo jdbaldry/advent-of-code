@@ -57,11 +57,19 @@ func TestTwo(t *testing.T) {
 }
 
 func BenchmarkTwo(b *testing.B) {
-	want := 45000
+	want := 212117
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
 	for i := 0; i < b.N; i++ {
-		got := two(parsed)
+		got := two(mustParse(f))
 		if got != want {
 			b.Fatalf("two() mismatch: want %d, got %d", want, got)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }
@@ -78,11 +86,19 @@ func TestTwoNoSort(t *testing.T) {
 }
 
 func BenchmarkTwoNoSort(b *testing.B) {
-	want := 45000
+	want := 212117
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
 	for i := 0; i < b.N; i++ {
-		got := twoNoSort(parsed)
+		got := twoNoSort(mustParse(f))
 		if got != want {
 			b.Fatalf("twoNoSort() mismatch: want %d, got %d", want, got)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }
@@ -102,14 +118,22 @@ func TestTwoNoParse(t *testing.T) {
 }
 
 func BenchmarkTwoNoParse(b *testing.B) {
-	want := 45000
+	want := 212117
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
 	for i := 0; i < b.N; i++ {
-		got, err := twoNoParse(strings.NewReader(example))
+		got, err := twoNoParse(f)
 		if err != nil {
 			b.Fatalf("twoNoParse() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("twoNoParse() mismatch: want %d, got %d", want, got)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }

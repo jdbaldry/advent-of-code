@@ -29,27 +29,29 @@ func one(r io.Reader) (int, error) {
 	return 0, fmt.Errorf("start of packet marker not found in datastream")
 }
 
-func oneUsingBits(r io.Reader) (int, error) {
+// See twoWithXor.
+func oneWithXor(r io.Reader) (int, error) {
 	scanner := bufio.NewScanner(r)
 	scanner.Split(bufio.ScanRunes)
 
+	var field uint64
 	var seen [4]rune
 	for i := 0; scanner.Scan(); i++ {
-		seen[i%4], _ = utf8.DecodeRune(scanner.Bytes())
+		newest, _ := utf8.DecodeRune(scanner.Bytes())
+		seen[i%4] = newest
+		field ^= uint64(1 << (int(newest) - int('A')))
+
 		if i < 3 {
 			continue
-		}
-
-		var field uint64
-		for _, r := range seen {
-			shift := int(r) - int('A')
-			shifted := uint64(1 << shift)
-			field |= shifted
 		}
 
 		if countBits(field) == 4 {
 			return i + 1, nil
 		}
+
+		oldest := seen[(i+1)%4]
+		field ^= uint64(1 << (int(oldest) - int('A')))
+
 	}
 	if err := scanner.Err(); err != nil {
 		return 0, err

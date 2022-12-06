@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"strings"
 	"testing"
 
@@ -55,10 +56,17 @@ func TestParse(t *testing.T) {
 }
 
 func BenchmarkParse(b *testing.B) {
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
 	for i := 0; i < b.N; i++ {
-		_, err := parse(strings.NewReader(example))
+		_, err := parse(f)
 		if err != nil {
 			b.Fatalf("Unable to parse example input: %v", err)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }
@@ -68,7 +76,7 @@ func FuzzParse(f *testing.F) {
 	f.Fuzz(func(t *testing.T, s string) {
 		_, err := parse(strings.NewReader(example))
 		if err != nil {
-			f.Fatalf("Unable to parse example input: %v", err)
+			t.Fatalf("Unable to parse example input: %v", err)
 		}
 	})
 }
@@ -82,11 +90,18 @@ func TestOne(t *testing.T) {
 }
 
 func BenchmarkOne(b *testing.B) {
-	want := 24000
+	want := 72511
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
 	for i := 0; i < b.N; i++ {
-		got := one(parsed)
+		got := one(mustParse(f))
 		if got != want {
 			b.Fatalf("one() mismatch: want %v, got %v", want, got)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }

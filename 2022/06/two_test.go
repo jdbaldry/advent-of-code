@@ -2,6 +2,7 @@ package main
 
 import (
 	"io"
+	"os"
 	"strings"
 	"testing"
 
@@ -42,40 +43,58 @@ func TestTwos(t *testing.T) {
 }
 
 func BenchmarkTwo(b *testing.B) {
-	want := 19
+	want := 2665
+	f, err := os.Open("input.txt")
+	if err != nil {
+		panic(err.Error())
+	}
+
 	for i := 0; i < b.N; i++ {
-		got, err := two(strings.NewReader(example))
+		got, err := two(f)
 		if err != nil {
 			b.Fatalf("two() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("two() mismatch: want %v, got %v", want, got)
 		}
+		f.Seek(0, 0)
 	}
 }
 
 func BenchmarkTwoWithMap(b *testing.B) {
-	want := 19
+	want := 2665
+	f, err := os.Open("input.txt")
+	if err != nil {
+		panic(err.Error())
+	}
+
 	for i := 0; i < b.N; i++ {
-		got, err := twoWithMap(strings.NewReader(example))
+		got, err := twoWithMap(f)
 		if err != nil {
 			b.Fatalf("twoWithMap() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("twoWithMap() mismatch: want %v, got %v", want, got)
 		}
+		f.Seek(0, 0)
 	}
 }
 
 func BenchmarkTwoWithXor(b *testing.B) {
-	want := 19
+	want := 2665
+	f, err := os.Open("input.txt")
+	if err != nil {
+		panic(err.Error())
+	}
+
 	for i := 0; i < b.N; i++ {
-		got, err := twoWithXor(strings.NewReader(example))
+		got, err := twoWithXor(f)
 		if err != nil {
 			b.Fatalf("twoWithXor() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("twoWithXor() mismatch: want %v, got %v", want, got)
 		}
+		f.Seek(0, 0)
 	}
 }

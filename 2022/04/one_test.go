@@ -23,7 +23,6 @@ func TestOnes(t *testing.T) {
 		fn   func(io.Reader) (int, error)
 	}{
 		{"one", one},
-		{"oneByRunes", oneByRunes},
 	} {
 		for _, tc := range []struct {
 			name  string
@@ -61,27 +60,22 @@ func TestOnes(t *testing.T) {
 }
 
 func BenchmarkOne(b *testing.B) {
-	want := 2
+	want := 651
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
 	for i := 0; i < b.N; i++ {
-		got, err := one(strings.NewReader(example))
+		got, err := one(f)
 		if err != nil {
 			b.Fatalf("one() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("one() mismatch: want %v, got %v", want, got)
 		}
-	}
-}
-
-func BenchmarkOneByRunes(b *testing.B) {
-	want := 2
-	for i := 0; i < b.N; i++ {
-		got, err := oneByRunes(strings.NewReader(example))
-		if err != nil {
-			b.Fatalf("oneByRunes() unexpected error: %v", err)
-		}
-		if got != want {
-			b.Fatalf("oneByRunes() mismatch: want %v, got %v", want, got)
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }

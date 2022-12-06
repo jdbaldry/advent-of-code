@@ -1,0 +1,7 @@
+goos: linux
+goarch: amd64
+pkg: github.com/jdbaldry/advent-of-code/2022/04
+cpu: Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz
+BenchmarkOne-8   	    4434	    274313 ns/op	  115616 B/op	    4001 allocs/op
+BenchmarkTwo-8   	    4459	    272322 ns/op	  115616 B/op	    4001 allocs/op
+PASS

@@ -59,40 +59,61 @@ func TestOnes(t *testing.T) {
 }
 
 func BenchmarkOne(b *testing.B) {
-	want := 15
+	want := 12645
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
 	for i := 0; i < b.N; i++ {
-		got, err := one(strings.NewReader(example))
+		got, err := one(f)
 		if err != nil {
 			b.Fatalf("one() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("one() mismatch: want %v, got %v", want, got)
 		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
+		}
 	}
 }
 
 func BenchmarkOneMod3(b *testing.B) {
-	want := 15
+	want := 12645
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
 	for i := 0; i < b.N; i++ {
-		got, err := oneMod3(strings.NewReader(example))
+		got, err := oneMod3(f)
 		if err != nil {
 			b.Fatalf("oneMod3() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("oneMod3() mismatch: want %v, got %v", want, got)
 		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
+		}
 	}
 }
 
 func BenchmarkOneMod3ByRunes(b *testing.B) {
-	want := 15
+	want := 12645
+	f, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
 	for i := 0; i < b.N; i++ {
-		got, err := oneMod3ByRunes(strings.NewReader(example))
+		got, err := oneMod3ByRunes(f)
 		if err != nil {
 			b.Fatalf("oneMod3ByRunes() unexpected error: %v", err)
 		}
 		if got != want {
 			b.Fatalf("oneMod3ByRunes() mismatch: want %v, got %v", want, got)
+		}
+		if _, err := f.Seek(0, 0); err != nil {
+			b.Fatal(err)
 		}
 	}
 }
