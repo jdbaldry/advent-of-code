@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"regexp"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -68,9 +70,22 @@ func BenchmarkLazyRegexp(b *testing.B) {
 	input := "move 1 from 2 to 1"
 	re := regexp.MustCompile(`^.*?(\d+).*?(\d+).*?(\d+)$`)
 	for i := 0; i < b.N; i++ {
-		got := re.MatchString(input)
-		if got != true {
-			b.Errorf("`^.*?(\\d+).*?(\\d+).*?(\\d+)$`.MatchString(input) must return true")
+		got := re.FindStringSubmatch(input)
+
+		count, err := strconv.Atoi(got[1])
+		if err != nil {
+			panic(err.Error())
+		}
+		from, err := strconv.Atoi(got[2])
+		if err != nil {
+			panic(err.Error())
+		}
+		to, err := strconv.Atoi(got[3])
+		if err != nil {
+			panic(err.Error())
+		}
+		if count != 1 || from != 2 || to != 1 {
+			b.Errorf(`"^.*?(\\d+).*?(\\d+).*?(\\d+)$".FindStringSubmatch() must return []string{input, "1", "2", "1"}`)
 		}
 	}
 }
@@ -78,9 +93,33 @@ func BenchmarkLazyRegexp(b *testing.B) {
 func BenchmarkAccurate(b *testing.B) {
 	input := "move 1 from 2 to 1"
 	for i := 0; i < b.N; i++ {
-		got := instructionRegexp.MatchString(input)
-		if got != true {
-			b.Errorf("instructionRegexp.MatchString(input) must return true")
+		got := instructionRegexp.FindStringSubmatch(input)
+
+		count, err := strconv.Atoi(got[1])
+		if err != nil {
+			panic(err.Error())
+		}
+		from, err := strconv.Atoi(got[2])
+		if err != nil {
+			panic(err.Error())
+		}
+		to, err := strconv.Atoi(got[3])
+		if err != nil {
+			panic(err.Error())
+		}
+		if count != 1 || from != 2 || to != 1 {
+			b.Errorf(`instructionRegexp.FindStringSubmatch() must return []string{input, "1", "2", "1"}`)
+		}
+	}
+}
+
+func BenchmarkSscanf(b *testing.B) {
+	input := "move 1 from 2 to 1"
+	for i := 0; i < b.N; i++ {
+		var count, from, to int
+		fmt.Sscanf(input, "move %d from %d to %d", &count, &from, &to)
+		if count != 1 || from != 2 || to != 1 {
+			b.Errorf(`fmt.Sscanf() must set count, from, to = 1, 2, 1`)
 		}
 	}
 }
