@@ -9,6 +9,7 @@ mkShell {
     golangci-lint
     go_1_19
     gopls
+    gofumpt
     gotools
     jsonnet-tool
     jq

@@ -34,7 +34,7 @@ local parseCommand(command, line) =
   assert index == std.length(command) : 'unparsed command: "%s"' % [command[index:]];
   { direction: direction, distance: distance }
 ;
-[
+local broken = [
   local travelled = std.foldr(
     function(command, acc)
       local line = acc[std.length(acc) - 1][0] + 1;
@@ -63,4 +63,5 @@ local parseCommand(command, line) =
     position,
   );
   final.horizontal * final.depth,
-]
+];
+[]

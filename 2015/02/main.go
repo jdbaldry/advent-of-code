@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"log"
@@ -11,96 +12,116 @@ import (
 )
 
 var (
-	logger           = log.New(os.Stderr, "", log.Llongfile)
-	dimensionsRegexp = regexp.MustCompile(`^(\d+)x(\d+)x(\d+)$`)
+	dimensionsRegexp      = regexp.MustCompile(`^(\d+)x(\d+)x(\d+)$`)
+	errDoesNotMatchRegexp = errors.New("does not match regexp")
 )
 
 type dimensions struct{ l, w, h int }
 
-func parseDimensions(r io.Reader) []dimensions {
-	var ds []dimensions
+func parseDimensions(r io.Reader) ([]dimensions, error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanLines)
 
-	s := bufio.NewScanner(r)
-	s.Split(bufio.ScanLines)
-	for s.Scan() {
-		matches := dimensionsRegexp.FindAllStringSubmatch(s.Text(), -1)
-		if len(matches) == 0 {
-			logger.Fatalf("Line %q does not match regexp %q", s.Text(), dimensionsRegexp)
-		}
+	var parsed []dimensions
 
-		l, err := strconv.Atoi(matches[0][1])
-		if err != nil {
-			logger.Fatalf("Unable to parse length %q: %v", matches[0][1], err)
-		}
-		w, err := strconv.Atoi(matches[0][2])
-		if err != nil {
-			logger.Fatalf("Unable to parse width %q: %v", matches[0][2], err)
-		}
-		h, err := strconv.Atoi(matches[0][3])
-		if err != nil {
-			logger.Fatalf("Unable to parse height %q: %v", matches[0][3], err)
+	for scanner.Scan() {
+		matches := dimensionsRegexp.FindStringSubmatch(scanner.Text())
+		if len(matches) != dimensionsRegexp.NumSubexp()+1 {
+			return parsed, fmt.Errorf("line %q %w %q", scanner.Text(), errDoesNotMatchRegexp, dimensionsRegexp)
 		}
 
-		ds = append(ds, dimensions{l, w, h})
+		length, err := strconv.Atoi(matches[1])
+		if err != nil {
+			return parsed, fmt.Errorf("unable to parse length %q: %w", matches[1], err)
+		}
+
+		width, err := strconv.Atoi(matches[2])
+		if err != nil {
+			return parsed, fmt.Errorf("unable to parse width %q: %w", matches[2], err)
+		}
+
+		height, err := strconv.Atoi(matches[3])
+		if err != nil {
+			return parsed, fmt.Errorf("unable to parse height %q: %w", matches[3], err)
+		}
+
+		parsed = append(parsed, dimensions{length, width, height})
 	}
 
-	return ds
+	return parsed, nil
 }
 
 func one(ds []dimensions) int {
 	var total int
 
-	for _, d := range ds {
+	for _, dimension := range ds {
 		var smallest int
 
-		lw := d.l * d.w
-		smallest = lw
-		wh := d.w * d.h
-		if wh < smallest {
-			smallest = wh
-		}
-		hl := d.h * d.l
-		if hl < smallest {
-			smallest = hl
+		lengthByWidth := dimension.l * dimension.w
+		smallest = lengthByWidth
+
+		widthByHeight := dimension.w * dimension.h
+		if widthByHeight < smallest {
+			smallest = widthByHeight
 		}
 
-		total += 2*lw + 2*wh + 2*hl + smallest
+		heightByLength := dimension.h * dimension.l
+		if heightByLength < smallest {
+			smallest = heightByLength
+		}
+
+		total += 2*lengthByWidth + 2*widthByHeight + 2*heightByLength + smallest
 	}
+
 	return total
+}
+
+func perimeter(l, w int) int {
+	//nolint:gomnd
+	return 2 * (l + w)
 }
 
 func two(ds []dimensions) int {
 	var total int
 
-	for _, d := range ds {
+	for _, dimension := range ds {
 		var smallest int
 
-		lw := 2 * (d.l + d.w)
-		smallest = lw
-		wh := 2 * (d.w + d.h)
-		if wh < smallest {
-			smallest = wh
-		}
-		hl := 2 * (d.h + d.l)
-		if hl < smallest {
-			smallest = hl
+		lengthByWidth := perimeter(dimension.l, dimension.w)
+		smallest = lengthByWidth
+
+		widthByHeight := perimeter(dimension.w, dimension.h)
+		if widthByHeight < smallest {
+			smallest = widthByHeight
 		}
 
-		total += smallest + d.l*d.w*d.h
+		heightByLength := perimeter(dimension.h, dimension.l)
+		if heightByLength < smallest {
+			smallest = heightByLength
+		}
+
+		total += smallest + dimension.l*dimension.w*dimension.h
 	}
 
 	return total
 }
 
 func main() {
+	logger := log.New(os.Stderr, "", log.Llongfile)
+
 	input, err := os.Open("input.txt")
 	if err != nil {
-		logger.Fatalf("Unable to open input.txt: %v\n", err)
+		logger.Fatalf("ERROR: %v", err)
 	}
 	defer input.Close()
 
-	dimensions := parseDimensions(input)
+	parsed, err := parseDimensions(input)
+	if err != nil {
+		logger.Fatalf("ERROR: %v", err)
+	}
 
-	fmt.Println(one(dimensions))
-	fmt.Println(two(dimensions))
+	//nolint:forbidigo
+	fmt.Println(one(parsed))
+	//nolint:forbidigo
+	fmt.Println(two(parsed))
 }

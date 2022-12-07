@@ -1,21 +1,41 @@
 === RUN   TestOnes
-=== RUN   TestOnes/simple
-=== RUN   TestOnes/example
---- PASS: TestOnes (0.00s)
-    --- PASS: TestOnes/simple (0.00s)
-    --- PASS: TestOnes/example (0.00s)
+=== PAUSE TestOnes
 === RUN   TestTwos
+=== PAUSE TestTwos
+=== CONT  TestOnes
+=== RUN   TestOnes/simple
+=== PAUSE TestOnes/simple
+=== RUN   TestOnes/example
+=== PAUSE TestOnes/example
+=== CONT  TestTwos
 === RUN   TestTwos/example
+=== PAUSE TestTwos/example
+=== CONT  TestOnes/example
 === RUN   TestTwos/input
+=== PAUSE TestTwos/input
 === RUN   TestTwos/adams
+=== CONT  TestOnes/simple
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+    --- PASS: TestOnes/simple (0.00s)
+=== PAUSE TestTwos/adams
 === RUN   TestTwos/adams_failing_id_22
+=== PAUSE TestTwos/adams_failing_id_22
 === RUN   TestTwos/adams_failing_id_23
+=== PAUSE TestTwos/adams_failing_id_23
 === RUN   TestTwos/adams_failing_id_50
+=== PAUSE TestTwos/adams_failing_id_50
+=== CONT  TestTwos/example
+=== CONT  TestTwos/adams_failing_id_22
+=== CONT  TestTwos/adams_failing_id_50
+=== CONT  TestTwos/input
+=== CONT  TestTwos/adams_failing_id_23
+=== CONT  TestTwos/adams
 --- PASS: TestTwos (0.00s)
     --- PASS: TestTwos/example (0.00s)
-    --- PASS: TestTwos/input (0.00s)
-    --- PASS: TestTwos/adams (0.00s)
     --- PASS: TestTwos/adams_failing_id_22 (0.00s)
     --- PASS: TestTwos/adams_failing_id_23 (0.00s)
     --- PASS: TestTwos/adams_failing_id_50 (0.00s)
+    --- PASS: TestTwos/adams (0.00s)
+    --- PASS: TestTwos/input (0.00s)
 PASS

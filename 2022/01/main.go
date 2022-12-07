@@ -12,13 +12,16 @@ import (
 
 func main() {
 	flag.Parse()
+
 	cookie := os.Getenv("AOC_SESSION_COOKIE")
 
+	//nolint:varnamelen
 	cf, err := fetcher.NewCachingFetcher("https://adventofcode.com/2022/day/1/input", cookie, "input.txt")
 	if err != nil {
 		if errors.Is(err, fetcher.ErrSessionCookieRequired) {
 			log.Fatalf("Unable to fetch input: AOC_SESSION_COOKIE environment variable is unset: %v\n", err)
 		}
+
 		log.Fatalf("Unable to create fetcher: %v\n", err)
 	}
 
@@ -32,6 +35,8 @@ func main() {
 		log.Fatalf("Unable to parse input: %v\n", err)
 	}
 
+	//nolint:forbidigo
 	fmt.Println(one(parsed))
+	//nolint:forbidigo
 	fmt.Println(twoNoSort(parsed))
 }

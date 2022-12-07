@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"regexp"
@@ -20,8 +21,16 @@ const (
 	win
 )
 
+const distinctShapes = 3
+
 var (
-	oneResults = map[string]int{
+	errUnexpectedInput = errors.New("unexpected input")
+	errUnexpectedRune  = errors.New("unexpected rune")
+)
+
+func one(r io.Reader) (int, error) {
+	scanner := bufio.NewScanner(r)
+	results := map[string]int{
 		"A X": draw + rock,
 		"A Y": win + paper,
 		"A Z": loss + scissors,
@@ -32,28 +41,20 @@ var (
 		"C Y": loss + paper,
 		"C Z": draw + scissors,
 	}
-	shapes = map[string]int{
-		"A": rock,
-		"B": paper,
-		"C": scissors,
-		"X": rock,
-		"Y": paper,
-		"Z": scissors,
-	}
-)
 
-func one(r io.Reader) (int, error) {
 	var sum int
-	scanner := bufio.NewScanner(r)
-	for i := 0; scanner.Scan(); i++ {
-		result, ok := oneResults[scanner.Text()]
+
+	for line := 0; scanner.Scan(); line++ {
+		result, ok := results[scanner.Text()]
 		if !ok {
-			return sum, fmt.Errorf("unexpected input on line %d: %q", i, scanner.Text())
+			return sum, fmt.Errorf("%w on line %d: %q", errUnexpectedInput, line, scanner.Text())
 		}
+
 		sum += result
 	}
+
 	if err := scanner.Err(); err != nil {
-		return sum, err
+		return sum, fmt.Errorf("%w during scanning", err)
 	}
 
 	return sum, nil
@@ -68,28 +69,46 @@ func one(r io.Reader) (int, error) {
 // The distance is rotated by one using (distance + 1) mod 3 to get results that can be mapped
 // to scores using *3.
 func oneMod3(r io.Reader) (int, error) {
-	var sum int
-	strategyRegexp := regexp.MustCompile(`^([ABC]) ([XYZ])$`)
 	scanner := bufio.NewScanner(r)
-	for i := 0; scanner.Scan(); i++ {
-		matches := strategyRegexp.FindStringSubmatch(scanner.Text())
-		if len(matches) != 3 {
-			return sum, fmt.Errorf("unable to parse input on line %d: %q it must match the regexp %q", i, scanner.Text(), strategyRegexp.String())
-		}
-		opp, own := shapes[matches[1]], shapes[matches[2]]
-		distance := ((own + 3) - opp) % 3
-		sum += ((distance+1)%3)*3 + own
+
+	strategyRegexp := regexp.MustCompile(`^([ABC]) ([XYZ])$`)
+	shapes := map[string]int{
+		"A": rock,
+		"B": paper,
+		"C": scissors,
+		"X": rock,
+		"Y": paper,
+		"Z": scissors,
 	}
+
+	var sum int
+
+	for line := 0; scanner.Scan(); line++ {
+		matches := strategyRegexp.FindStringSubmatch(scanner.Text())
+		if len(matches) != strategyRegexp.NumSubexp()+1 {
+			return sum, fmt.Errorf(
+				"%w on line %d: %q does not match regexp %q",
+				errUnexpectedInput,
+				line,
+				scanner.Text(),
+				strategyRegexp.String(),
+			)
+		}
+
+		opp, own := shapes[matches[1]], shapes[matches[2]]
+		distance := ((own + distinctShapes) - opp) % distinctShapes
+		sum += ((distance+1)%distinctShapes)*distinctShapes + own
+	}
+
 	if err := scanner.Err(); err != nil {
-		return sum, err
+		return sum, fmt.Errorf("%w during scanning", err)
 	}
 
 	return sum, nil
 }
 
+//nolint:cyclop
 func oneMod3ByRunes(r io.Reader) (int, error) {
-	var sum int
-
 	scanner := bufio.NewScanner(r)
 	scanner.Split(bufio.ScanRunes)
 
@@ -99,48 +118,50 @@ func oneMod3ByRunes(r io.Reader) (int, error) {
 		stateOwn
 		stateLine
 	)
-	var state = stateOpp
-	var opp, own int
+
+	var opp, own, sum, state int
+
 	for line, col := 0, 0; scanner.Scan(); col++ {
-		rune, _ := utf8.DecodeRune(scanner.Bytes())
+		char, _ := utf8.DecodeRune(scanner.Bytes())
 
 		switch state {
 		case stateOpp:
-			switch rune {
-			case 'A', 'B', 'C':
-				opp = int(rune) - int('A')
-				state = stateSpace
-			default:
-				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted /[ABC]/", line, col, rune)
+			if char < 'A' || 'C' < char {
+				return sum, fmt.Errorf("%w %q on line %d, column %d, wanted /[ABC]/", errUnexpectedRune, char, line, col)
 			}
-		case stateSpace:
-			if rune != ' ' {
-				return sum, fmt.Errorf(`%d:%d: unexpected rune %q, wanted " "`, line, col, rune)
-			}
-			state = stateOwn
-		case stateOwn:
-			switch rune {
-			case 'X', 'Y', 'Z':
-				own = int(rune) - int('X')
-				state = stateLine
-				distance := ((own + 3) - opp) % 3
-				sum += ((distance+1)%3)*3 + own + 1
-			default:
-				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted /[XYZ]/", line, col, rune)
-			}
-		case stateLine:
-			switch rune {
-			case '\n':
-				state = stateOpp
-				line, col = line+1, -1
-			default:
-				return sum, fmt.Errorf("%d:%d: unexpected rune %q, wanted newline", line, col, rune)
-			}
-		}
 
+			opp = int(char) - int('A')
+			state = stateSpace
+
+		case stateSpace:
+			if char != ' ' {
+				return sum, fmt.Errorf(`%w %q on line %d, column %d, wanted " "`, errUnexpectedRune, char, line, col)
+			}
+
+			state = stateOwn
+
+		case stateOwn:
+			if char < 'X' || 'Z' < char {
+				return sum, fmt.Errorf("%w %q on line %d, column %d, wanted /[XYZ]/", errUnexpectedRune, char, line, col)
+			}
+
+			own = int(char) - int('X')
+			state = stateLine
+			distance := ((own + distinctShapes) - opp) % distinctShapes
+			sum += ((distance+1)%distinctShapes)*distinctShapes + own + 1
+
+		case stateLine:
+			if char != '\n' {
+				return sum, fmt.Errorf("%w %q on line %d, column %d, wanted newline", errUnexpectedRune, char, line, col)
+			}
+
+			state = stateOpp
+			line, col = line+1, -1
+		}
 	}
+
 	if err := scanner.Err(); err != nil {
-		return sum, err
+		return sum, fmt.Errorf("%w during scanning", err)
 	}
 
 	return sum, nil

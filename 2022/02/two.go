@@ -2,11 +2,14 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 )
 
-var (
-	twoResults = map[string]int{
+func two(r io.Reader) (int, error) {
+	scanner := bufio.NewScanner(r)
+
+	results := map[string]int{
 		"A X": int(loss + scissors),
 		"A Y": int(draw + rock),
 		"A Z": int(win + paper),
@@ -17,17 +20,15 @@ var (
 		"C Y": int(draw + scissors),
 		"C Z": int(win + rock),
 	}
-)
 
-func two(r io.Reader) (int, error) {
 	var sum int
-
-	scanner := bufio.NewScanner(r)
 	for i := 0; scanner.Scan(); i++ {
-		sum += twoResults[scanner.Text()]
+		sum += results[scanner.Text()]
 	}
+
 	if err := scanner.Err(); err != nil {
-		return sum, err
+		return sum, fmt.Errorf("%w during scanning", err)
 	}
+
 	return sum, nil
 }

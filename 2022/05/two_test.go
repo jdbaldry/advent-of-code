@@ -9,14 +9,19 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
+//nolint:dupl
 func TestTwos(t *testing.T) {
+	t.Parallel()
+
 	for _, impl := range []struct {
 		name string
 		fn   func(io.Reader) (string, error)
 	}{
 		{"two", two},
 	} {
-		for _, tc := range []struct {
+		impl := impl
+
+		for _, testCase := range []struct {
 			name  string
 			input func() io.Reader
 			want  string
@@ -27,12 +32,17 @@ func TestTwos(t *testing.T) {
 				"MCD",
 			},
 		} {
-			t.Run(tc.name, func(t *testing.T) {
-				got, err := impl.fn(tc.input())
+			testCase := testCase
+
+			t.Run(testCase.name, func(t *testing.T) {
+				t.Parallel()
+
+				got, err := impl.fn(testCase.input())
 				if err != nil {
 					t.Errorf("%s() unexpected errors: %v", impl.name, err)
 				}
-				if diff := cmp.Diff(tc.want, got); diff != "" {
+
+				if diff := cmp.Diff(testCase.want, got); diff != "" {
 					t.Errorf("%s() mismatch (-want +got):\n%s", impl.name, diff)
 				}
 			})
@@ -42,20 +52,23 @@ func TestTwos(t *testing.T) {
 
 func BenchmarkTwo(b *testing.B) {
 	want := "LVMRWSSPZ"
-	f, err := os.Open("input.txt")
+
+	file, err := os.Open("input.txt")
 	if err != nil {
 		b.Fatal(err)
 	}
 
 	for i := 0; i < b.N; i++ {
-		got, err := two(f)
+		got, err := two(file)
 		if err != nil {
 			b.Fatalf("two() unexpected error: %v", err)
 		}
+
 		if got != want {
 			b.Fatalf("two() mismatch: want %v, got %v", want, got)
 		}
-		if _, err := f.Seek(0, 0); err != nil {
+
+		if _, err := file.Seek(0, 0); err != nil {
 			b.Fatal(err)
 		}
 	}

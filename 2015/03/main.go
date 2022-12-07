@@ -2,25 +2,31 @@ package main
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"io"
 	"log"
 	"os"
 )
 
-const inputFile = "input.txt"
-
-var logger = log.New(os.Stderr, "", log.Llongfile)
+var errUnexpectedCharacter = errors.New("unexpected character in input")
 
 type house [2]int
 
-func one(r io.Reader) int {
-	var visited = make(map[house]struct{})
-	s := bufio.NewScanner(r)
-	s.Split(bufio.ScanRunes)
-	for x, y := 0, 0; s.Scan(); {
+func one(r io.Reader) (int, error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanRunes)
+
+	var (
+		//nolint:varnamelen
+		x, y    int
+		visited = make(map[house]struct{})
+	)
+
+	for scanner.Scan() {
 		visited[house{x, y}] = struct{}{}
-		switch s.Text() {
+
+		switch scanner.Text() {
 		case "^":
 			x--
 		case "v":
@@ -31,73 +37,75 @@ func one(r io.Reader) int {
 			y--
 		case "\n":
 		default:
-			logger.Fatalf("Unexpected character in input %q\n", s.Text())
+			return 0, fmt.Errorf("%q %w", scanner.Text(), errUnexpectedCharacter)
 		}
 	}
 
-	var total int
-	for range visited {
-		total++
+	if err := scanner.Err(); err != nil {
+		return 0, fmt.Errorf("%w during scanning", scanner.Err())
 	}
 
-	return total
+	return len(visited), nil
 }
 
-func two(r io.Reader) int {
-	var visited = make(map[house]struct{})
-	s := bufio.NewScanner(r)
-	s.Split(bufio.ScanRunes)
-	for i, x, y, a, b := 0, 0, 0, 0, 0; s.Scan(); i++ {
-		if i%2 == 0 {
-			visited[house{x, y}] = struct{}{}
-		} else {
-			visited[house{a, b}] = struct{}{}
-		}
-		switch s.Text() {
+func two(r io.Reader) (int, error) {
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanRunes)
+
+	var (
+		coordinates [2]house
+		visited     = make(map[house]struct{})
+	)
+
+	//nolint:varnamelen
+	for i := 0; scanner.Scan(); i++ {
+		visited[coordinates[i%2]] = struct{}{}
+
+		switch scanner.Text() {
 		case "^":
-			if i%2 == 0 {
-				x--
-			} else {
-				a--
-			}
+			coordinates[i%2][0]--
 		case "v":
-			if i%2 == 0 {
-				x++
-			} else {
-				a++
-			}
+			coordinates[i%2][0]++
 		case ">":
-			if i%2 == 0 {
-				y++
-			} else {
-				b++
-			}
+			coordinates[i%2][1]--
 		case "<":
-			if i%2 == 0 {
-				y--
-			} else {
-				b--
-			}
+			coordinates[i%2][1]++
 		case "\n":
 		default:
-			logger.Fatalf("Unexpected character in input %q\n", s.Text())
+			return 0, fmt.Errorf("%q %w", scanner.Text(), errUnexpectedCharacter)
 		}
 	}
 
-	var total int
-	for range visited {
-		total++
+	if err := scanner.Err(); err != nil {
+		return 0, fmt.Errorf("%w during scanning", scanner.Err())
 	}
-	return total
+
+	return len(visited), nil
 }
 
 func main() {
-	input, err := os.Open(inputFile)
+	logger := log.New(os.Stderr, "", log.Llongfile)
+
+	input, err := os.Open("input.txt")
 	if err != nil {
-		logger.Fatalf("Unable to open %s: %v\n", inputFile, err)
+		logger.Fatalf("ERROR: %v", err)
 	}
 
-	fmt.Println(one(input))
-	input.Seek(0, 0)
-	fmt.Println(two(input))
+	got, err := one(input)
+	if err != nil {
+		logger.Fatalf("ERROR: %v", err)
+	}
+	//nolint:forbidigo
+	fmt.Println(got)
+
+	if _, err := input.Seek(0, 0); err != nil {
+		logger.Fatalf("ERROR: %v", err)
+	}
+
+	got, err = two(input)
+	if err != nil {
+		logger.Fatalf("ERROR: %v", err)
+	}
+	//nolint:forbidigo
+	fmt.Println(got)
 }

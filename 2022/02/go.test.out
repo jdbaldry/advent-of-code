@@ -1,9 +1,41 @@
-=== RUN   TestOne
-=== RUN   TestOne/example
-=== RUN   TestOne/input
---- PASS: TestOne (0.00s)
-    --- PASS: TestOne/example (0.00s)
-    --- PASS: TestOne/input (0.00s)
+=== RUN   TestOnes
+=== PAUSE TestOnes
 === RUN   TestTwo
+=== PAUSE TestTwo
+=== CONT  TestOnes
+=== RUN   TestOnes/example
+=== PAUSE TestOnes/example
+=== RUN   TestOnes/input
+=== PAUSE TestOnes/input
+=== RUN   TestOnes/example#01
+=== PAUSE TestOnes/example#01
+=== RUN   TestOnes/input#01
+=== PAUSE TestOnes/input#01
+=== RUN   TestOnes/example#02
+=== CONT  TestTwo
+=== PAUSE TestOnes/example#02
+=== RUN   TestTwo/example
+=== RUN   TestOnes/input#02
+=== PAUSE TestOnes/input#02
+=== CONT  TestOnes/example
+=== PAUSE TestTwo/example
+=== RUN   TestTwo/input
+=== PAUSE TestTwo/input
+=== CONT  TestTwo/example
+=== CONT  TestOnes/example#01
+=== CONT  TestOnes/input#01
+=== CONT  TestOnes/input#02
+=== CONT  TestOnes/input
+=== CONT  TestOnes/example#02
+=== CONT  TestTwo/input
 --- PASS: TestTwo (0.00s)
+    --- PASS: TestTwo/example (0.00s)
+    --- PASS: TestTwo/input (0.00s)
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+    --- PASS: TestOnes/example#01 (0.00s)
+    --- PASS: TestOnes/example#02 (0.00s)
+    --- PASS: TestOnes/input (0.00s)
+    --- PASS: TestOnes/input#02 (0.00s)
+    --- PASS: TestOnes/input#01 (0.00s)
 PASS

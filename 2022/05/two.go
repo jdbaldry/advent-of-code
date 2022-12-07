@@ -6,61 +6,65 @@ import (
 	"io"
 )
 
+//nolint:cyclop
 func two(r io.Reader) (string, error) {
-	var message string
-
 	scanner := bufio.NewScanner(r)
 
-	var s state
-	var stacks []*cell
+	var (
+		state  state
+		stacks []*cell
+	)
+
 	for line := 0; scanner.Scan(); line++ {
 		text := scanner.Text()
-		switch s {
+
+		switch state {
 		case stateDrawing:
 			if line == 0 {
 				stacks = make([]*cell, len(text)/4+1)
 			}
+
 			var err error
-			stacks, s, err = parseStacks(stacks, text)
+
+			stacks, state, err = parseStacks(stacks, text)
 			if err != nil {
-				return message, err
+				return "", err
 			}
 
 		case stateInstructions:
-			count, from, to, err := parseInstruction(text)
+			count, start, end, err := parseInstruction(text)
 			if err != nil {
-				return message, fmt.Errorf("%d: %v", line, err)
+				return "", fmt.Errorf("%d: %w", line, err)
 			}
 
 			// Instructions are one-indexed by stacks are zero-indexed.
-			from--
-			to--
+			start, end = start-1, end-1
 
 			var stack, last *cell
+
+			//nolint:varnamelen
 			for i := 0; i < count; i++ {
-				if stacks[from] == nil {
+				if stacks[start] == nil {
 					break
 				}
-				crate := stacks[from]
-				stacks[from] = crate.cdr
+
+				crate := stacks[start]
+				stacks[start] = crate.cdr
 				last = crate
+
 				if i == 0 {
 					stack = last
 				}
 			}
-			last.cdr = stacks[to]
-			stacks[to] = stack
+
+			last.cdr = stacks[end]
+			stacks[end] = stack
 		}
-	}
-	if err := scanner.Err(); err != nil {
-		return message, err
 	}
 
-	for i := 0; i < len(stacks); i++ {
-		if stacks[i] == nil {
-			continue
-		}
-		message += string(stacks[i].car)
+	if err := scanner.Err(); err != nil {
+		return "", fmt.Errorf("%w during scanning", err)
 	}
-	return message, nil
+
+	return message(stacks), nil
 }

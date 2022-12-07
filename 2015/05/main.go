@@ -8,85 +8,113 @@ import (
 	"os"
 )
 
-const inputFile = "input.txt"
+func isExcludedSequence(prev, curr rune) bool {
+	return (prev == 'a' && curr == 'b') ||
+		(prev == 'c' && curr == 'd') ||
+		(prev == 'p' && curr == 'q') ||
+		(prev == 'x' && curr == 'y')
+}
 
-var logger = log.New(os.Stderr, "", log.Llongfile)
+func isVowel(char rune) bool {
+	return char == 'a' || char == 'e' || char == 'i' || char == 'o' || char == 'u'
+}
 
 func one(r io.Reader) int {
-	s := bufio.NewScanner(r)
-	s.Split(bufio.ScanLines)
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanLines)
 
 	var total int
 
-	for s.Scan() {
-		var prev rune
-		var vowels int
-		var letterAppearsTwice bool
-		var containsExcluded bool
-		for _, r := range s.Text() {
-			if (prev == 'a' && r == 'b') ||
-				(prev == 'c' && r == 'd') ||
-				(prev == 'p' && r == 'q') ||
-				(prev == 'x' && r == 'y') {
+	for scanner.Scan() {
+		var (
+			prev               rune
+			vowels             int
+			letterAppearsTwice bool
+			containsExcluded   bool
+		)
+
+		for _, char := range scanner.Text() {
+			if isExcludedSequence(prev, char) {
 				containsExcluded = true
+
 				break
 			}
-			if r == prev {
+
+			if char == prev {
 				letterAppearsTwice = true
 			}
-			if r == 'a' || r == 'e' || r == 'i' || r == 'o' || r == 'u' {
+
+			if isVowel(char) {
 				vowels++
 			}
-			prev = r
+
+			prev = char
 		}
+
 		if !containsExcluded && letterAppearsTwice && vowels >= 3 {
 			total++
 		}
 	}
+
 	return total
 }
 
 func two(r io.Reader) int {
-	s := bufio.NewScanner(r)
-	s.Split(bufio.ScanLines)
+	scanner := bufio.NewScanner(r)
+	scanner.Split(bufio.ScanLines)
 
 	var total int
-	for s.Scan() {
+
+	for scanner.Scan() {
 		type pair [2]rune
 
-		var pairs = make(map[pair]struct{})
-		var prev rune
-		var prevprev rune
-		var nonOverlappingPair bool
-		var repeatWithOneBetween bool
-		for _, r := range s.Text() {
-			_, ok := pairs[pair{r, prev}]
+		var (
+			pairs                = make(map[pair]struct{})
+			prev                 rune
+			prevprev             rune
+			nonOverlappingPair   bool
+			repeatWithOneBetween bool
+		)
+
+		for _, char := range scanner.Text() {
+			_, ok := pairs[pair{char, prev}]
 			if ok && prev != prevprev {
 				nonOverlappingPair = true
 			}
-			pairs[pair{r, prev}] = struct{}{}
 
-			if r == prevprev && r != prev {
+			pairs[pair{char, prev}] = struct{}{}
+
+			if char == prevprev && char != prev {
 				repeatWithOneBetween = true
 			}
+
 			prevprev = prev
-			prev = r
+			prev = char
 		}
 
 		if nonOverlappingPair && repeatWithOneBetween {
 			total++
 		}
 	}
+
 	return total
 }
 
 func main() {
-	input, err := os.Open(inputFile)
+	logger := log.New(os.Stderr, "", log.Llongfile)
+
+	input, err := os.Open("input.txt")
 	if err != nil {
-		logger.Fatalf("Unable to open file %s: %v\n", inputFile, err)
+		logger.Fatalf("ERROR: %v\n", err)
 	}
 
+	//nolint:forbidigo
 	fmt.Println(one(input))
-	input.Seek(0, 0)
+
+	if _, err := input.Seek(0, 0); err != nil {
+		logger.Fatalf("ERROR: %v", err)
+	}
+
+	//nolint:forbidigo
 	fmt.Println(two(input))
 }

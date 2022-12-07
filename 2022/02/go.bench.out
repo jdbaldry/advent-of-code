@@ -2,8 +2,8 @@ goos: linux
 goarch: amd64
 pkg: github.com/jdbaldry/advent-of-code/2022/02
 cpu: Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz
-BenchmarkOne-8              	   10398	    112656 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkOneMod3-8          	    1327	    790427 ns/op	  296306 B/op	    7549 allocs/op
-BenchmarkOneMod3ByRunes-8   	   11032	    109214 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkTwo-8              	   10980	    108552 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkOne-8              	   10000	    102224 ns/op	    4513 B/op	       2 allocs/op
+BenchmarkOneMod3-8          	    1555	    658188 ns/op	  296327 B/op	    7549 allocs/op
+BenchmarkOneMod3ByRunes-8   	   12340	     98813 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkTwo-8              	   10000	    102401 ns/op	    4512 B/op	       2 allocs/op
 PASS
