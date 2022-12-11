@@ -1,0 +1,125 @@
+=== RUN   TestCountBits
+=== PAUSE TestCountBits
+=== RUN   TestOnes
+=== PAUSE TestOnes
+=== RUN   TestTwos
+=== PAUSE TestTwos
+=== CONT  TestCountBits
+=== RUN   TestCountBits/16_bits
+=== PAUSE TestCountBits/16_bits
+=== RUN   TestCountBits/16_bits#01
+=== PAUSE TestCountBits/16_bits#01
+=== RUN   TestCountBits/16_bits#02
+=== CONT  TestTwos
+=== CONT  TestOnes
+=== RUN   TestOnes/example
+=== RUN   TestTwos/example
+=== PAUSE TestOnes/example
+=== PAUSE TestTwos/example
+=== RUN   TestTwos/additional_example_1
+=== PAUSE TestTwos/additional_example_1
+=== RUN   TestTwos/additional_example_2
+=== PAUSE TestTwos/additional_example_2
+=== PAUSE TestCountBits/16_bits#02
+=== CONT  TestCountBits/16_bits#02
+=== CONT  TestCountBits/16_bits#01
+=== RUN   TestOnes/additional_example_1
+=== PAUSE TestOnes/additional_example_1
+=== RUN   TestOnes/additional_example_2
+=== PAUSE TestOnes/additional_example_2
+=== CONT  TestCountBits/16_bits
+--- PASS: TestCountBits (0.00s)
+    --- PASS: TestCountBits/16_bits#02 (0.00s)
+    --- PASS: TestCountBits/16_bits#01 (0.00s)
+    --- PASS: TestCountBits/16_bits (0.00s)
+=== RUN   TestTwos/additional_example_3
+=== RUN   TestOnes/additional_example_3
+=== PAUSE TestTwos/additional_example_3
+=== PAUSE TestOnes/additional_example_3
+=== RUN   TestTwos/additional_example_4
+=== RUN   TestOnes/additional_example_4
+=== PAUSE TestTwos/additional_example_4
+=== PAUSE TestOnes/additional_example_4
+=== RUN   TestTwos/example#01
+=== RUN   TestOnes/example#01
+=== PAUSE TestTwos/example#01
+=== PAUSE TestOnes/example#01
+=== RUN   TestTwos/additional_example_1#01
+=== PAUSE TestTwos/additional_example_1#01
+=== RUN   TestOnes/additional_example_1#01
+=== RUN   TestTwos/additional_example_2#01
+=== PAUSE TestTwos/additional_example_2#01
+=== PAUSE TestOnes/additional_example_1#01
+=== RUN   TestTwos/additional_example_3#01
+=== RUN   TestOnes/additional_example_2#01
+=== PAUSE TestTwos/additional_example_3#01
+=== PAUSE TestOnes/additional_example_2#01
+=== RUN   TestTwos/additional_example_4#01
+=== PAUSE TestTwos/additional_example_4#01
+=== RUN   TestOnes/additional_example_3#01
+=== RUN   TestTwos/example#02
+=== PAUSE TestOnes/additional_example_3#01
+=== PAUSE TestTwos/example#02
+=== RUN   TestOnes/additional_example_4#01
+=== RUN   TestTwos/additional_example_1#02
+=== PAUSE TestTwos/additional_example_1#02
+=== PAUSE TestOnes/additional_example_4#01
+=== RUN   TestTwos/additional_example_2#02
+=== CONT  TestOnes/example
+=== CONT  TestOnes/example#01
+=== PAUSE TestTwos/additional_example_2#02
+=== RUN   TestTwos/additional_example_3#02
+=== PAUSE TestTwos/additional_example_3#02
+=== CONT  TestOnes/additional_example_1#01
+=== CONT  TestOnes/additional_example_1
+=== RUN   TestTwos/additional_example_4#02
+=== CONT  TestOnes/additional_example_4#01
+=== CONT  TestOnes/additional_example_4
+=== PAUSE TestTwos/additional_example_4#02
+=== CONT  TestTwos/example
+=== CONT  TestTwos/additional_example_2#02
+=== CONT  TestTwos/example#02
+=== CONT  TestOnes/additional_example_3#01
+=== CONT  TestTwos/additional_example_3#01
+=== CONT  TestTwos/additional_example_4
+=== CONT  TestTwos/additional_example_3
+=== CONT  TestTwos/additional_example_2
+=== CONT  TestTwos/additional_example_1
+=== CONT  TestTwos/additional_example_4#02
+=== CONT  TestTwos/additional_example_2#01
+=== CONT  TestTwos/additional_example_4#01
+=== CONT  TestTwos/additional_example_1#02
+=== CONT  TestTwos/additional_example_3#02
+=== CONT  TestOnes/additional_example_2#01
+=== CONT  TestOnes/additional_example_2
+=== CONT  TestOnes/additional_example_3
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example#01 (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+    --- PASS: TestOnes/additional_example_1#01 (0.00s)
+    --- PASS: TestOnes/additional_example_1 (0.00s)
+    --- PASS: TestOnes/additional_example_4#01 (0.00s)
+    --- PASS: TestOnes/additional_example_4 (0.00s)
+    --- PASS: TestOnes/additional_example_3#01 (0.00s)
+    --- PASS: TestOnes/additional_example_2#01 (0.00s)
+    --- PASS: TestOnes/additional_example_2 (0.00s)
+    --- PASS: TestOnes/additional_example_3 (0.00s)
+=== CONT  TestTwos/additional_example_1#01
+=== CONT  TestTwos/example#01
+--- PASS: TestTwos (0.00s)
+    --- PASS: TestTwos/example (0.00s)
+    --- PASS: TestTwos/additional_example_2#02 (0.00s)
+    --- PASS: TestTwos/example#02 (0.00s)
+    --- PASS: TestTwos/additional_example_4 (0.00s)
+    --- PASS: TestTwos/additional_example_3 (0.00s)
+    --- PASS: TestTwos/additional_example_3#01 (0.00s)
+    --- PASS: TestTwos/additional_example_2 (0.00s)
+    --- PASS: TestTwos/additional_example_1 (0.00s)
+    --- PASS: TestTwos/additional_example_4#02 (0.00s)
+    --- PASS: TestTwos/additional_example_1#02 (0.00s)
+    --- PASS: TestTwos/additional_example_4#01 (0.00s)
+    --- PASS: TestTwos/additional_example_2#01 (0.00s)
+    --- PASS: TestTwos/additional_example_3#02 (0.00s)
+    --- PASS: TestTwos/additional_example_1#01 (0.00s)
+    --- PASS: TestTwos/example#01 (0.00s)
+PASS

@@ -62,12 +62,16 @@ func one(r io.Reader) (int, error) {
 
 // oneMod3 solves the problem using the following knowledge:
 // rock < paper < scissors < rock ...
-// Distance is the number of steps taken up the order to reach the opponents shape.
-// When the opponent chooses a winning shape, the distance is 1.
-// When the opponent chooses a losing shape, the distance is 2.
+// Distance is the number of steps taken up the order to reach the opponents shape
+// after first counting one period from one's own shape.
+// When the opponent chooses a winning shape, the distance is 2.
+// When the opponent chooses a losing shape, the distance is 1.
 // When the opponent chooses the same shape, the distance is 0.
 // The distance is rotated by one using (distance + 1) mod 3 to get results that can be mapped
 // to scores using *3.
+// When the opponent chooses a winning shape, (distance + 1) % 3 is 0.
+// When the opponent chooses a losing shape, (distance + 1) % 3 is 2.
+// When the opponent chooses the same shape, (distance + 1) % 3 is 1.
 func oneMod3(r io.Reader) (int, error) {
 	scanner := bufio.NewScanner(r)
 
