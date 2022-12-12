@@ -1,0 +1,47 @@
+=== RUN   TestMonkeyRegexp
+=== PAUSE TestMonkeyRegexp
+=== RUN   TestStartingItemsRegexp
+=== PAUSE TestStartingItemsRegexp
+=== RUN   TestOperationRegexp
+=== PAUSE TestOperationRegexp
+=== RUN   TestIfTrueRegexp
+=== PAUSE TestIfTrueRegexp
+=== RUN   TestIfFalseRegexp
+=== PAUSE TestIfFalseRegexp
+=== RUN   TestOnes
+=== PAUSE TestOnes
+=== RUN   TestTwos
+=== PAUSE TestTwos
+=== CONT  TestMonkeyRegexp
+--- PASS: TestMonkeyRegexp (0.00s)
+=== CONT  TestIfTrueRegexp
+--- PASS: TestIfTrueRegexp (0.00s)
+=== CONT  TestOperationRegexp
+=== RUN   TestOperationRegexp/+_6
+=== PAUSE TestOperationRegexp/+_6
+=== RUN   TestOperationRegexp/*_old
+=== PAUSE TestOperationRegexp/*_old
+=== CONT  TestOperationRegexp/+_6
+=== CONT  TestStartingItemsRegexp
+--- PASS: TestStartingItemsRegexp (0.00s)
+=== CONT  TestOperationRegexp/*_old
+--- PASS: TestOperationRegexp (0.00s)
+    --- PASS: TestOperationRegexp/+_6 (0.00s)
+    --- PASS: TestOperationRegexp/*_old (0.00s)
+=== CONT  TestTwos
+=== RUN   TestTwos/example
+=== PAUSE TestTwos/example
+=== CONT  TestIfFalseRegexp
+=== CONT  TestOnes
+=== RUN   TestOnes/example
+=== PAUSE TestOnes/example
+=== CONT  TestOnes/example
+--- PASS: TestIfFalseRegexp (0.00s)
+=== CONT  TestTwos/example
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+=== CONT  TestTwos/example
+    two_test.go:40: TODO: solve
+--- PASS: TestTwos (0.00s)
+    --- SKIP: TestTwos/example (0.00s)
+PASS

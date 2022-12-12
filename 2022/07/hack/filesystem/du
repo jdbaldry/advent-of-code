@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -euf -o pipefail
+
+function usage {
+  cat <<EOF
+Return the size of the directories similar to du except that it ignores the size of the directories and subdirectories.
+It also writes the directories as if <PATH> is the root directory.
+
+Usage:
+  $0 <PATH>
+
+Examples:
+  $0 "$(go run ./)"
+EOF
+}
+
+cd "$1"
+
+total=0
+while read -r size dir; do
+  size="$((size - $(find "${dir}" -type d | wc -l) * 4096))"
+  dir="$(sed 's#\.#/#;s#//#/#' <<<"${dir}")"
+
+  total=$((total + size))
+
+  printf "%s\t%s\n" "${size}" "${dir}"
+done <<<"$(du -b .)"
+printf "total\t%s\n" "${total}"

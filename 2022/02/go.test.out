@@ -7,30 +7,30 @@
 === PAUSE TestOnes/example
 === RUN   TestOnes/input
 === PAUSE TestOnes/input
-=== RUN   TestOnes/example#01
-=== PAUSE TestOnes/example#01
-=== RUN   TestOnes/input#01
-=== PAUSE TestOnes/input#01
-=== RUN   TestOnes/example#02
 === CONT  TestTwo
-=== PAUSE TestOnes/example#02
 === RUN   TestTwo/example
-=== RUN   TestOnes/input#02
-=== PAUSE TestOnes/input#02
-=== CONT  TestOnes/example
 === PAUSE TestTwo/example
 === RUN   TestTwo/input
 === PAUSE TestTwo/input
+=== RUN   TestOnes/example#01
+=== PAUSE TestOnes/example#01
+=== CONT  TestTwo/input
+=== RUN   TestOnes/input#01
+=== PAUSE TestOnes/input#01
+=== RUN   TestOnes/example#02
+=== PAUSE TestOnes/example#02
+=== RUN   TestOnes/input#02
+=== PAUSE TestOnes/input#02
+=== CONT  TestOnes/example
+=== CONT  TestOnes/input#01
 === CONT  TestTwo/example
 === CONT  TestOnes/example#01
-=== CONT  TestOnes/input#01
-=== CONT  TestOnes/input#02
+--- PASS: TestTwo (0.00s)
+    --- PASS: TestTwo/input (0.00s)
+    --- PASS: TestTwo/example (0.00s)
 === CONT  TestOnes/input
 === CONT  TestOnes/example#02
-=== CONT  TestTwo/input
---- PASS: TestTwo (0.00s)
-    --- PASS: TestTwo/example (0.00s)
-    --- PASS: TestTwo/input (0.00s)
+=== CONT  TestOnes/input#02
 --- PASS: TestOnes (0.00s)
     --- PASS: TestOnes/example (0.00s)
     --- PASS: TestOnes/example#01 (0.00s)

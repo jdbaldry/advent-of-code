@@ -3,19 +3,29 @@
 with pkgs;
 mkShell {
   buildInputs = [
-    graphviz
-    gnumake
-    go-jsonnet
-    golangci-lint
+    # Go
+    delve
+    gdb
     go_1_19
-    gopls
     gofumpt
+    golangci-lint
+    gopls
     gotools
+
+    # Jsonnet
+    go-jsonnet
     jsonnet-tool
-    jq
+
+    # Scheme
     mitscheme
+
+    # Tools
+    gnumake
+    graphviz
+    jq
     rlwrap
   ];
+  hardeningDisable = [ "fortify" ];
   shellHook = ''
     export PATH=~/bin/:$PATH
   '';

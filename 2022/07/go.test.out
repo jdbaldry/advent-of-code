@@ -1,0 +1,25 @@
+=== RUN   TestOnes
+=== PAUSE TestOnes
+=== RUN   TestTwos
+=== PAUSE TestTwos
+=== CONT  TestOnes
+=== RUN   TestOnes/example
+=== PAUSE TestOnes/example
+=== RUN   TestOnes/input
+=== PAUSE TestOnes/input
+=== CONT  TestOnes/example
+=== CONT  TestTwos
+=== CONT  TestOnes/input
+=== RUN   TestTwos/example
+=== PAUSE TestTwos/example
+=== RUN   TestTwos/input
+=== PAUSE TestTwos/input
+=== CONT  TestTwos/example
+=== CONT  TestTwos/input
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+    --- PASS: TestOnes/input (0.00s)
+--- PASS: TestTwos (0.00s)
+    --- PASS: TestTwos/example (0.00s)
+    --- PASS: TestTwos/input (0.00s)
+PASS
