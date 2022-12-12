@@ -14,6 +14,8 @@
 === PAUSE TestTwos
 === CONT  TestMonkeyRegexp
 --- PASS: TestMonkeyRegexp (0.00s)
+=== CONT  TestIfFalseRegexp
+--- PASS: TestIfFalseRegexp (0.00s)
 === CONT  TestIfTrueRegexp
 --- PASS: TestIfTrueRegexp (0.00s)
 === CONT  TestOperationRegexp
@@ -22,26 +24,26 @@
 === RUN   TestOperationRegexp/*_old
 === PAUSE TestOperationRegexp/*_old
 === CONT  TestOperationRegexp/+_6
+=== CONT  TestTwos
 === CONT  TestStartingItemsRegexp
 --- PASS: TestStartingItemsRegexp (0.00s)
+=== RUN   TestTwos/example
+=== PAUSE TestTwos/example
+=== CONT  TestTwos/example
 === CONT  TestOperationRegexp/*_old
+Monkey 0 inspected items 104 times.
+Monkey 1 inspected items 102 times.
+Monkey 2 inspected items 8 times.
+Monkey 3 inspected items 108 times.
 --- PASS: TestOperationRegexp (0.00s)
     --- PASS: TestOperationRegexp/+_6 (0.00s)
     --- PASS: TestOperationRegexp/*_old (0.00s)
-=== CONT  TestTwos
-=== RUN   TestTwos/example
-=== PAUSE TestTwos/example
-=== CONT  TestIfFalseRegexp
 === CONT  TestOnes
 === RUN   TestOnes/example
 === PAUSE TestOnes/example
 === CONT  TestOnes/example
---- PASS: TestIfFalseRegexp (0.00s)
-=== CONT  TestTwos/example
 --- PASS: TestOnes (0.00s)
     --- PASS: TestOnes/example (0.00s)
-=== CONT  TestTwos/example
-    two_test.go:40: TODO: solve
 --- PASS: TestTwos (0.00s)
-    --- SKIP: TestTwos/example (0.00s)
+    --- PASS: TestTwos/example (0.01s)
 PASS

@@ -34,6 +34,7 @@ type monkey struct {
 	id        int
 	items     []int
 	operation func(int) int
+	divisor   int
 	test      func(int) bool
 	ifTrue    int
 	ifFalse   int
@@ -122,6 +123,7 @@ func parseMonkey(token string) (monkey, error) {
 				panic(fmt.Sprintf("Unrecognized operator %q", operator))
 			}
 		},
+		divisor: divisor,
 		test: func(i int) bool {
 			return i%divisor == 0
 		},
@@ -130,7 +132,7 @@ func parseMonkey(token string) (monkey, error) {
 	}, nil
 }
 
-func one(r io.Reader) (int, error) {
+func parseMonkeys(r io.Reader) ([]monkey, error) {
 	scanner := bufio.NewScanner(r)
 
 	var (
@@ -149,7 +151,7 @@ func one(r io.Reader) (int, error) {
 
 		monkey, err := parseMonkey(token)
 		if err != nil {
-			return 0, err
+			return monkeys, err
 		}
 
 		monkeys = append(monkeys, monkey)
@@ -158,14 +160,22 @@ func one(r io.Reader) (int, error) {
 
 	monkey, err := parseMonkey(token)
 	if err != nil {
-		return 0, err
+		return monkeys, err
 	}
 
 	if err := scanner.Err(); err != nil {
-		return 0, fmt.Errorf("%w during scanning", err)
+		return monkeys, fmt.Errorf("%w during scanning", err)
 	}
 
-	monkeys = append(monkeys, monkey)
+	return append(monkeys, monkey), nil
+}
+
+func one(r io.Reader) (int, error) {
+	monkeys, err := parseMonkeys(r)
+	if err != nil {
+		return 0, err
+	}
+
 	inspected := make([]int, len(monkeys))
 
 	for i, rounds := 0, 20; i < rounds; i++ {

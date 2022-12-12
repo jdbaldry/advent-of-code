@@ -29,15 +29,13 @@ func TestTwos(t *testing.T) {
 			{
 				"example",
 				func() io.Reader { return strings.NewReader(example) },
-				-1,
+				2713310158,
 			},
 		} {
 			testCase := testCase
 
 			t.Run(testCase.name, func(t *testing.T) {
 				t.Parallel()
-
-				t.Skip("TODO: solve")
 
 				got, err := impl.fn(testCase.input())
 				if err != nil {
@@ -53,9 +51,7 @@ func TestTwos(t *testing.T) {
 }
 
 func BenchmarkTwo(b *testing.B) {
-	want := -1
-
-	b.Skip("TODO: solve")
+	want := 2713310158
 
 	file, err := os.Open("input.txt")
 	if err != nil {

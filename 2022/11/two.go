@@ -1,49 +1,22 @@
 package main
 
 import (
-	"bufio"
-	"fmt"
 	"io"
 	"sort"
 )
 
 func two(r io.Reader) (int, error) {
-	scanner := bufio.NewScanner(r)
-
-	var (
-		monkeys []monkey
-		token   string
-	)
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if line != "" {
-			token += line + "\n"
-
-			continue
-		}
-
-		monkey, err := parseMonkey(token)
-		if err != nil {
-			return 0, err
-		}
-
-		monkeys = append(monkeys, monkey)
-		token = ""
-	}
-
-	monkey, err := parseMonkey(token)
+	monkeys, err := parseMonkeys(r)
 	if err != nil {
 		return 0, err
 	}
 
-	if err := scanner.Err(); err != nil {
-		return 0, fmt.Errorf("%w during scanning", err)
-	}
-
-	monkeys = append(monkeys, monkey)
 	inspected := make([]int, len(monkeys))
+
+	lcm := 1
+	for _, monkey := range monkeys {
+		lcm *= monkey.divisor
+	}
 
 	for i, rounds := 0, 10000; i < rounds; i++ {
 		for j, monkey := range monkeys { //nolint:varnamelen
@@ -51,7 +24,7 @@ func two(r io.Reader) (int, error) {
 				inspected[j]++
 
 				item = monkey.operation(item)
-				item /= 3
+				item %= lcm
 
 				if monkey.test(item) {
 					monkeys[monkey.ifTrue].items = append(monkeys[monkey.ifTrue].items, item)
