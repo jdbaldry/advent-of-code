@@ -42,7 +42,7 @@ func main() {
 		log.Fatalf("ERROR: unable to seek to start of input: %v\n", err)
 	}
 
-	got, err = two(r)
+	got, err = twoFromE(r)
 	if err != nil {
 		log.Fatalf("ERROR: unable to solve part two: %v\n", err)
 	}

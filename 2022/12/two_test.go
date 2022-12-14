@@ -18,6 +18,7 @@ func TestTwos(t *testing.T) {
 		fn   func(io.Reader) (int, error)
 	}{
 		{"two", two},
+		{"twoFromE", twoFromE},
 	} {
 		impl := impl
 
@@ -66,6 +67,30 @@ func BenchmarkTwo(b *testing.B) {
 
 		if got != want {
 			b.Fatalf("two() mismatch: want %v, got %v", want, got)
+		}
+
+		if _, err := file.Seek(0, 0); err != nil {
+			b.Fatal(err)
+		}
+	}
+}
+
+func BenchmarkTwoFromE(b *testing.B) {
+	want := 418
+
+	file, err := os.Open("input.txt")
+	if err != nil {
+		b.Fatal(err)
+	}
+
+	for i := 0; i < b.N; i++ {
+		got, err := twoFromE(file)
+		if err != nil {
+			b.Fatalf("twoFromE() unexpected error: %v", err)
+		}
+
+		if got != want {
+			b.Fatalf("twoFromE() mismatch: want %v, got %v", want, got)
 		}
 
 		if _, err := file.Seek(0, 0); err != nil {

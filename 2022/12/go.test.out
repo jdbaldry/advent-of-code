@@ -1,17 +1,9 @@
-=== RUN   TestOnes
-=== PAUSE TestOnes
 === RUN   TestTwos
 === PAUSE TestTwos
-=== CONT  TestOnes
-=== RUN   TestOnes/example
-=== PAUSE TestOnes/example
-=== CONT  TestOnes/example
 === CONT  TestTwos
-=== RUN   TestTwos/example
---- PASS: TestOnes (0.00s)
-    --- PASS: TestOnes/example (0.00s)
-=== PAUSE TestTwos/example
-=== CONT  TestTwos/example
+=== RUN   TestTwos/example#01
+=== PAUSE TestTwos/example#01
+=== CONT  TestTwos/example#01
 --- PASS: TestTwos (0.00s)
-    --- PASS: TestTwos/example (0.00s)
+    --- PASS: TestTwos/example#01 (0.00s)
 PASS
