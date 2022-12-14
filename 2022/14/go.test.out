@@ -1,0 +1,25 @@
+=== RUN   TestCoordRegexp
+=== PAUSE TestCoordRegexp
+=== RUN   TestOnes
+=== PAUSE TestOnes
+=== RUN   TestTwos
+=== PAUSE TestTwos
+=== CONT  TestCoordRegexp
+=== RUN   TestCoordRegexp/428,1
+=== PAUSE TestCoordRegexp/428,1
+=== CONT  TestCoordRegexp/428,1
+--- PASS: TestCoordRegexp (0.00s)
+    --- PASS: TestCoordRegexp/428,1 (0.00s)
+=== CONT  TestTwos
+=== RUN   TestTwos/example
+=== CONT  TestOnes
+=== PAUSE TestTwos/example
+=== CONT  TestTwos/example
+=== RUN   TestOnes/example
+=== PAUSE TestOnes/example
+=== CONT  TestOnes/example
+--- PASS: TestTwos (0.00s)
+    --- PASS: TestTwos/example (0.00s)
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+PASS
