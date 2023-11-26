@@ -1,11 +1,9 @@
-DAYS = $(shell find . -wholename './*/*/Makefile' | sort)
-2015 = $(dir $(shell find . -wholename './2015/*/Makefile' | sort))
-2020 = $(dir $(shell find . -wholename './2020/*/Makefile' | sort))
-ALL  = $(2020)
-2021 = $(dir $(shell find . -wholename './2021/*/Makefile' | sort))
-ALL += $(2021)
-2022 = $(dir $(shell find . -wholename './2022/*/Makefile' | sort))
-ALL += $(2022)
+DAYS := $(shell find . -wholename './*/*/Makefile' | sort)
+2015 := $(dir $(shell find . -wholename './2015/*/Makefile' | sort))
+2020 := $(dir $(shell find . -wholename './2020/*/Makefile' | sort))
+2021 := $(dir $(shell find . -wholename './2021/*/Makefile' | sort))
+2022 := $(dir $(shell find . -wholename './2022/*/Makefile' | sort))
+ALL := $(2015) $(2020) $(2021) $(2022)
 
 include common.mk
 
@@ -14,7 +12,7 @@ info: ## Display informational values.
 	@printf "2015:\t$(2015)\n"
 	@printf "2020:\t$(2020)\n"
 	@printf "2021:\t$(2021)\n"
-	@printf "2021:\t$(2022)\n"
+	@printf "2022:\t$(2022)\n"
 	@printf "ALL:\t$(ALL)\n"
 	@printf "DAYS:\t$(DAYS)\n"
 
@@ -39,8 +37,10 @@ $(foreach dir,$(ALL),$(eval $(call all,$(dir))))
 
 .PHONY: 2021
 2021: ## Run all 2021 solutions.
+2021: $(2021)
 	:
 
 .PHONY: 2022
-2022: ## Run all 2021 solutions.
+2022: ## Run all 2022 solutions.
+2022: $(2022)
 	:
