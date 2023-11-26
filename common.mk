@@ -17,8 +17,8 @@ input.txt: ## Fetch the input for the puzzle.
 ifndef AOC_SESSION_COOKIE
 	$(error the AOC_SESSION_COOKIE environment variable is required to fetch the input file)
 endif
-	$(eval DAY := $(notdir $(CURDIR)))
-	$(eval YEAR := $(notdir $(realpath ..)))
+	@$(eval DAY := $(notdir $(CURDIR)))
+	@$(eval YEAR := $(notdir $(realpath ..)))
 	curl -sLo $(@) \
 		-H 'Cookie: session=$(AOC_SESSION_COOKIE)' \
 		https://adventofcode.com/$(YEAR)/day/$(DAY:0%=%)/input
