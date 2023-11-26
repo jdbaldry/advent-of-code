@@ -1,9 +1,10 @@
-DAYS := $(shell find . -wholename './*/*/Makefile' | sort)
 2015 := $(dir $(shell find . -wholename './2015/*/Makefile' | sort))
 2020 := $(dir $(shell find . -wholename './2020/*/Makefile' | sort))
 2021 := $(dir $(shell find . -wholename './2021/*/Makefile' | sort))
 2022 := $(dir $(shell find . -wholename './2022/*/Makefile' | sort))
-ALL := $(2015) $(2020) $(2021) $(2022)
+
+ALL    := $(2015) $(2020) $(2021) $(2022)
+BROKEN := $(dir $(shell find . -wholename './*/*/Makefile.broken' | sort))
 
 include common.mk
 
@@ -14,7 +15,7 @@ info: ## Display informational values.
 	@printf "2021:\t$(2021)\n"
 	@printf "2022:\t$(2022)\n"
 	@printf "ALL:\t$(ALL)\n"
-	@printf "DAYS:\t$(DAYS)\n"
+	@printf "BROKEN:\t$(BROKEN)\n"
 
 define all
 .PHONY: $(1)
