@@ -24,6 +24,7 @@ $(1):
 endef
 
 $(foreach dir,$(ALL),$(eval $(call all,$(dir))))
+$(foreach dir,$(ALL),$(eval $(call all,$(dir:./%/=%))))
 
 .PHONY: 2015
 2015: ## Run all 2015 solutions.
