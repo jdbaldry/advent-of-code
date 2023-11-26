@@ -5,7 +5,7 @@ i: input.txt
 
 minified.jsonnet: ## Produce a minified Jsonnet file
 minified.jsonnet: main.jsonnet
-	sed \
+	$(SED) \
 		-e '2d' \
 		-e 's/std/p/g' \
 		-e '1i local p = std;' \
