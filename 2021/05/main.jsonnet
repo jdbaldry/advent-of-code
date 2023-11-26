@@ -1,7 +1,7 @@
 local input = importstr 'input.txt';
 // local input = importstr 'test.txt';
 
-local pc = import '../../2020/02/parser-combinators.libsonnet';
+local pc = import '../../lib/parser-combinators.libsonnet';
 
 // data Point = (Int, Int)
 // data Segment = (Point, Point)
