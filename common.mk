@@ -13,6 +13,8 @@ help:
 
 GIT_ROOT := $(shell git rev-parse --show-toplevel)
 
+ALL +=
+
 input.txt: ## Fetch the input for the puzzle.
 ifndef AOC_SESSION_COOKIE
 	$(error the AOC_SESSION_COOKIE environment variable is required to fetch the input file)
