@@ -1,0 +1,53 @@
+=== RUN   TestCoordRegexp
+=== PAUSE TestCoordRegexp
+=== RUN   TestFoldRegexp
+=== PAUSE TestFoldRegexp
+=== RUN   TestOnes
+=== PAUSE TestOnes
+=== RUN   TestMirror
+=== PAUSE TestMirror
+=== RUN   TestTwos
+=== PAUSE TestTwos
+=== CONT  TestCoordRegexp
+=== RUN   TestCoordRegexp/valid
+=== PAUSE TestCoordRegexp/valid
+=== CONT  TestCoordRegexp/valid
+=== CONT  TestMirror
+=== CONT  TestTwos
+=== RUN   TestMirror/mirror(14,_7)
+=== RUN   TestTwos/example
+=== PAUSE TestMirror/mirror(14,_7)
+--- PASS: TestCoordRegexp (0.00s)
+    --- PASS: TestCoordRegexp/valid (0.00s)
+=== CONT  TestFoldRegexp
+=== PAUSE TestTwos/example
+=== CONT  TestTwos/example
+=== CONT  TestOnes
+--- PASS: TestTwos (0.00s)
+    --- PASS: TestTwos/example (0.00s)
+=== RUN   TestOnes/example
+=== RUN   TestMirror/mirror(0,_7)
+=== PAUSE TestOnes/example
+=== CONT  TestOnes/example
+=== RUN   TestFoldRegexp/fold_along_x=7
+=== PAUSE TestFoldRegexp/fold_along_x=7
+=== CONT  TestFoldRegexp/fold_along_x=7
+=== PAUSE TestMirror/mirror(0,_7)
+=== RUN   TestMirror/mirror(13,_7)
+--- PASS: TestFoldRegexp (0.00s)
+    --- PASS: TestFoldRegexp/fold_along_x=7 (0.00s)
+=== PAUSE TestMirror/mirror(13,_7)
+=== RUN   TestMirror/mirror(1,_7)
+--- PASS: TestOnes (0.00s)
+    --- PASS: TestOnes/example (0.00s)
+=== PAUSE TestMirror/mirror(1,_7)
+=== CONT  TestMirror/mirror(13,_7)
+=== CONT  TestMirror/mirror(1,_7)
+=== CONT  TestMirror/mirror(14,_7)
+=== CONT  TestMirror/mirror(0,_7)
+--- PASS: TestMirror (0.00s)
+    --- PASS: TestMirror/mirror(13,_7) (0.00s)
+    --- PASS: TestMirror/mirror(1,_7) (0.00s)
+    --- PASS: TestMirror/mirror(14,_7) (0.00s)
+    --- PASS: TestMirror/mirror(0,_7) (0.00s)
+PASS
