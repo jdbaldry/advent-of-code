@@ -1,10 +1,8 @@
-.INTERMEDIATE: i
-i: ## Intermediate tiny file name for minified Jsonnet solution
-i: input.txt
-	cp input.txt i
+include ../../jsonnet.mk
+include ../../common.mk
 
 minified.jsonnet: ## Produce a minified Jsonnet file
-minified.jsonnet: main.jsonnet
+minified.jsonnet: main.jsonnet i
 	$(SED) \
 		-e '2d' \
 		-e 's/std/p/g' \
@@ -15,19 +13,12 @@ minified.jsonnet: main.jsonnet
 		-e 's/input/i/g' \
 		-e 's/depths/d/g' \
 		-e 's/line/l/g' \
+		-e 's/lshift/ls/g' \
 		-e 's/zip/z/g' \
 		-e 's/sum/s/g' \
-		-e 's/window/w/g' \
+		-e 's/windows/w/g' \
 		-e 's/countIncreases/c/g' \
 		$< | tr -d '\n' | jsonnetfmt - > $@
 
-minified.json: ## Evaulate minified Jsonnet solution
-minified.json: minified.jsonnet i
-	jsonnet $< > $@
-
-DEPFILES := main.jsonnet.d
-$(DEPFILES):
-include $(wildcard $(DEPFILES))
-
-include ../../jsonnet.mk
-include ../../common.mk
+i: input.txt
+	cp $< $@
