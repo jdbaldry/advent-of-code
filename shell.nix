@@ -26,7 +26,4 @@ mkShell {
     rlwrap
   ];
   hardeningDisable = [ "fortify" ];
-  shellHook = ''
-    export PATH=~/bin/:$PATH
-  '';
 }
