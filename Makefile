@@ -30,19 +30,15 @@ $(foreach dir,$(ALL),$(eval $(call all,$(dir:./%/=%))))
 .PHONY: 2015
 2015: ## Run all 2015 solutions.
 2015: $(2015)
-	:
 
 .PHONY: 2020
 2020: ## Run all 2020 solutions.
 2020: $(2020)
-	:
 
 .PHONY: 2021
 2021: ## Run all 2021 solutions.
 2021: $(2021)
-	:
 
 .PHONY: 2022
 2022: ## Run all 2022 solutions.
 2022: $(2022)
-	:
